@@ -1,0 +1,48 @@
+{
+  "name": "react-hfn-pwa-template",
+  "version": "1.0.0",
+  "description": "Example on using Redux Saga with PawJS (https://github.com/Atyantik) and Semantic UI with HFN Profile APIs",
+  "scripts": {
+    "start": "pawjs --env=development start",
+    "build": "pawjs --env=production --config=prod.pawconfig.json build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeartfulnessInstitute/react-hfn-pwa-template.git"
+  },
+  "author": {
+    "name": "Sree Hari Nagaralu",
+  },
+  "engines": {
+    "node": ">=10.11.0"
+  },
+  "contributors": [
+    {
+      "name": "Sree Hari Nagaralu",
+    }
+  ],
+  "devDependencies": {
+    "@pawjs/pawjs": "^2.3.2"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HeartfulnessInstitute/react-hfn-pwa-template/issues"
+  },
+  "homepage": "https://github.com/HeartfulnessInstitute/react-hfn-pwa-template#readme",
+  "dependencies": {
+    "@heartfulnessinstitute/react-hfn-profile": "^1.0.2",
+    "@pawjs/redux": "^2.1.6",
+    "classnames": "^2.2.6",
+    "google-libphonenumber": "^3.2.3",
+    "js-base64": "^2.5.1",
+    "lodash": "^4.17.15",
+    "query-string": "^6.8.1",
+    "react-redux": "^5.0.7",
+    "react-redux-firebase": "^2.2.6",
+    "react-social-login-buttons": "^2.3.1",
+    "redux": "^4.0.1",
+    "redux-saga": "^0.16.2",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.87.2"
+  }
+}
