@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/HeartfulnessInstitute/react-hfn-pwa-template#readme",
   "dependencies": {
-    "@heartfulnessinstitute/react-hfn-profile": "^1.0.3",
+    "@heartfulnessinstitute/react-hfn-profile": "^1.1.0",
     "@pawjs/redux": "^2.1.6",
     "classnames": "^2.2.6",
     "google-libphonenumber": "^3.2.3",

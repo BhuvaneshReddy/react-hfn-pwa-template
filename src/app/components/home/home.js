@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'semantic-ui-react';
 
 
 import 'semantic-ui-css/semantic.min.css';
@@ -16,7 +17,11 @@ class Home extends Component {
         <div>
           <SignIn/>
         </div>
-
+        <br/>
+        <Button href="#page1">Page 1</Button>
+        <br />
+        <br />
+        <Button href="#page2">Page 2</Button>
      </div>
     );
   }
