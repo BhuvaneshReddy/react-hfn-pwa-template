@@ -4,7 +4,6 @@ import { Button } from 'semantic-ui-react';
 
 
 import 'semantic-ui-css/semantic.min.css';
-import { SignIn } from '../../auth/SignIn';
 
 export default @connect(state => ({}))
 
@@ -15,7 +14,6 @@ class Home extends Component {
           <h1>PWA with MySRCM APIs - Boilerplate</h1>
 
         <div>
-          <SignIn/>
         </div>
         <br/>
         <Button href="#page1">Page 1</Button>
