@@ -15,3 +15,4 @@ export const LS_TRIGGER_FLUSH = 'TRIGGER_FLUSH';
 // Login / Logout
 export const LOGIN_PROCESS_IT = "LOGIN_PROCESS_IT";
 export const USERINFO = "userinfo";
+export const LOGINGS = "logings";

@@ -14,7 +14,7 @@ import startCase from 'lodash/startCase';
 
 
 
-import { USERINFO } from '../reducers/constants';
+import { USERINFO, LOGINGS } from '../reducers/constants';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
 const arr2kv = (keys, vals) => {
@@ -103,6 +103,7 @@ function date_to_momentformat(date) {
     return '' + y + pad(m) + pad(d) + pad(h) + pad(mm) + pad(s);
 }
 
+const isnotnull =  (x) => (!isNil(x) && x !== "");
 
 export default {
     jsonparse: (obj, def) => {
@@ -124,11 +125,11 @@ export default {
     today: () => (new Date()), 
 
     userName: (ls) => get(ls, [USERINFO, "myInfo", "name"], ""),
-    loggedIn: (ls) => get(ls, [USERINFO, "loginState", "state"], false),
+    loggedIn: (ls) => isnotnull(get(ls, [USERINFO, "uid"], null)),
     userEmail: (ls) => get(ls, [USERINFO, "myInfo", "user_email"], false),
     userPhone: (ls) => get(ls, [USERINFO, "myInfo", "mobile"], ""),
     abhyasiID: (ls) => get(ls, [USERINFO, "myInfo", "ref"], false), 
-    loginBlob: (ls) => get(ls, [USERINFO, "loginBlob"], null),
+    isOpenLoginForm: (gs) => get(gs, [LOGINGS, "openLoginForm"], false), 
 
     userAddress: (ls) => [get(ls, [USERINFO, "myInfo", "street"], ""),
         get(ls, [USERINFO, "myInfo", "street2"], "") ,
@@ -147,7 +148,7 @@ export default {
     beforeunload: (fn) => window.addEventListener('beforeunload', fn),
 
     log: process.env.NODE_ENV === 'production' ? () => { } : console.log,
-    isnotnull: (x) => (!isNil(x) && x !== ""),
+    isnotnull,
     isnull: (x) => (isNil(x) || x === ""),
     get, set, has, isEqual, isNil, countBy, keyBy, fromPairs, toPairs, startCase,
 

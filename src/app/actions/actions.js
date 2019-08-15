@@ -52,14 +52,22 @@ export default {
 
     doLogin: (loginBlob) => ({
         type: LOGIN_PROCESS_IT,
-        loginBlob
+        loginBlob, openLoginForm: false 
     }),
     doLogout: () => ({
         type: LSC_RESET_CACHE,
         db: USERINFO
     }),
 
+    setLoginForm: () => ({
+        type: LOGIN_PROCESS_IT,
+        openLoginForm: true
+    }),
 
+    cancelLoginForm: () => ({
+        type: LOGIN_PROCESS_IT,
+        openLoginForm: false
+    }),
 
 
 }

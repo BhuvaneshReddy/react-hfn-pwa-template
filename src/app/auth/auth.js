@@ -8,6 +8,7 @@ import u from '../libs/utils';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import { Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
 const fetchAPI = (authToken, api) => {
     const apiMap = {
@@ -15,20 +16,20 @@ const fetchAPI = (authToken, api) => {
             api: "/api/v2/secondary-firebase-token/",
             method: "POST",
             extraHdrs: {
-                'Postman-Token': '66edbbf3-9cfd-46bd-a253-b2ca97051574',
+                'Postman-Token': process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN,
                 'cache-control': 'no-cache',
             }
         },
         "me": { api: "/api/v2/me/", method: "GET", extraHdrs: {} },        
     }
 
-    const url = "http://profile.srcm.net" + apiMap[api].api;
+    const url = process.env.REACT_APP_PROFILE_SERVER + apiMap[api].api;
     const method = apiMap[api].method;
     var data = {
         method,
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'x-client-id': 'a3kR6ZGYQRrGJ5cCp4v2HgVeMK8sKcr6850LURoL',
+            'x-client-id': process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID, 
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json',
             ...(apiMap[api].extraHdrs),
@@ -41,24 +42,9 @@ const fetchAPI = (authToken, api) => {
 const fetchT = (authToken) => fetchAPI(authToken, "get-token").then(res => res.text());
 const fetchMe = (authToken) => fetchAPI(authToken, "me").then(res => res.json()).then(res => res.results[0]);
 
+const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
+const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDvmxKH7738HE1T3fpJYUvi4BcEAakqQbQ",
-    authDomain: "auth-qa.heartfulness.org",
-    projectId: "unifiedplatform-qa",
-    messagingSenderId: "498241637356",
-    appId: "1:498241637356:web:c8cb5b2bfaf132d1"
-};
-
-const firebaseConfigDflt = {
-    apiKey: "AIzaSyBbrfwnFLUSM_S3UfRsHWC4auNuiuVXLBk",
-    authDomain: "pwa-hfn-dev.firebaseapp.com",
-    databaseURL: "https://pwa-hfn-dev.firebaseio.com",
-    projectId: "pwa-hfn-dev",
-    storageBucket: "pwa-hfn-dev.appspot.com",
-    messagingSenderId: "1008983810384",
-    appId: "1:1008983810384:web:97d6d442596cb08f"
-};
 
 // Instantiate a Firebase app.
 const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
@@ -81,6 +67,7 @@ const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
     ({ localstorage: ls, globalstate: gs }) => ({
         loggedIn: u.loggedIn(ls),
         userName: u.userName(ls),
+        isOpenLoginForm: u.isOpenLoginForm(gs),
     }),
     actions
 )
@@ -102,8 +89,6 @@ export class MyAuth extends React.Component {
     };
 
     state = {
-        isSignedIn: undefined,
-
         loading: false,
         error: false,
     };
@@ -116,6 +101,7 @@ export class MyAuth extends React.Component {
      * @inheritDoc
      */
     componentWillMount() {
+        
         const setS = this.setS;
 
         const setLogin = this.props.doLogin;
@@ -124,27 +110,29 @@ export class MyAuth extends React.Component {
         this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
             console.log("1st Auth Firebase Response", user);
             if (!!user) {
+                const uid = user.uid;
                 user.getIdToken(false).then(function (idToken) {
-                    console.log(idToken);
+                  //  console.log(idToken);
                     setS({ loading: true });
+                   
+                   
+                    fetchMe(idToken).then(myInfo => {
+                        console.log("MySRCM Me Response", myInfo);
+                        setLogin({ uid, myInfo })
+                        setS({ loading: false });
 
-        
+                    }).catch(e => {
+                        console.log("Error fetchMe: ", e);
+                        setS({ loading: false, error: true })
+
+                    });
 
                     fetchT(idToken).then(res => {
-                        console.log("MySRCM Response", res);
+                   //     console.log("MySRCM Response", res);
                         firebaseAppDflt.auth().signInWithCustomToken(res).then((r) => {
-                            console.log("2nd Firebase Response", r);
+                    //        console.log("2nd Firebase Response", r);
                             
-                            fetchMe(idToken).then(myInfo => {
-                                console.log("MySRCM Me Response", myInfo);
-                                setLogin({ loginState: { state: true }, myInfo })
-                                setS({ loading: false, isSignedIn: true });
-
-                            }).catch(e => {
-                                console.log("Error fetchMe: ", e);
-                                setS({ loading: false, error: true })
-
-                            });
+  
                         }).catch(e => {
                             console.log("Error firebaseAppDflt: ", e);
                             setS({ loading: false, error: true })
@@ -176,49 +164,69 @@ export class MyAuth extends React.Component {
      * @inheritDoc
      */
     render() {
-
-        const authuser = firebaseApp.auth().currentUser;
-        const dfltuser = firebaseAppDflt.auth().currentUser;
-
-        if (this.state.loading) {
-            return <div>loading...</div>;
+        if (!this.props.isOpenLoginForm) {
+            return null
         }
 
-        if (this.state.error) {
-            return <div>Error...</div>;
-
-        }
-
+  
+        
         return (
             <div >
-                {! this.props.loggedIn &&
-                    <div>
+                <Modal open={this.props.isOpenLoginForm}>
+                    {this.state.loading && <div><Dimmer active={true}><Loader active={true} /> </Dimmer></div>}
+                    {!this.state.loading &&
                         <StyledFirebaseAuth
                             // className={styles.firebaseUi}
                             uiConfig={this.uiConfig}
                             firebaseAuth={firebaseApp.auth()} />
-                    </div>
-                }
-                {this.props.loggedIn &&
-                    <div>
-                        Hello {firebaseApp.auth().currentUser.displayName}. You are now signed In!
-                        <button onClick={() => firebaseApp.auth().signOut()}>Sign-out</button>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                    {Object.entries(authuser).map(e => {
+                    }
+                    {this.state.error && <div>Error in Authentication</div>}
+                </Modal>
 
-                        return <div><br/>{e[0]} : {e[1] !== null && typeof e[1] === 'string'? (e[1].length < 100 ?  e[1] : "big string" ): "object"}</div>
-                    })}
-                    <br /><br /><br />
-                    {Object.entries(dfltuser).map(e => {
-                        return <div>{e[0]} : {e[1] !== null && typeof e[1] === 'string' ? (e[1].length < 100 ? e[1] : "big string") :  "object"}</div>
-                    })}
-                    </div>
+            </div>
+        );
+    }
+}
+
+@connect(
+    ({ localstorage: ls, globalstate: gs }) => ({
+        loggedIn: u.loggedIn(ls),
+        userName: u.userName(ls),
+        isOpenLoginForm: u.isOpenLoginForm(gs),
+    }),
+    actions
+)
+export class SignIn extends React.Component {
+
+    render() {
+        return (
+            <div>
+                {!this.props.loggedIn && 
+                    <Button content="Sign In" onClick={() => {
+                        this.props.setLoginForm({openLoginForm: true});
+                    }} />
                 }
             </div>
         );
     }
 }
 
+@connect(
+    ({ localstorage: ls, globalstate: gs }) => ({
+        loggedIn: u.loggedIn(ls),
+        userName: u.userName(ls),
+        isOpenLoginForm: u.isOpenLoginForm(gs),
+    }),
+    actions
+)
+export class SignOut extends React.Component {
+    render() {
+        const setLogout = this.props.doLogout;
+        return (this.props.loggedIn && (!this.props.isOpenLoginForm) && <div>
+            <Button content="Sign Out" onClick={() => {
+                firebaseApp.auth().signOut().then(() => setLogout())
+            }} />
+        </div>
+        )
+    }
+}

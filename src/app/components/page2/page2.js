@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchProfileAPI } from '@heartfulnessinstitute/react-hfn-profile';
 import { Segment, Button } from 'semantic-ui-react';
 
 import { SignIn } from '../../auth/SignIn';
@@ -9,12 +8,12 @@ import { SignIn } from '../../auth/SignIn';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
+import { MyAuth } from '../../auth/auth';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
         loggedIn: u.loggedIn(ls),
         userName: u.userName(ls),
-        loginBlob: u.loginBlob(ls),
     }),
     actions
 )
@@ -33,7 +32,7 @@ class TableAndForm extends React.Component {
         return (
             <div>
                 {!this.props.loggedIn ?
-                    <SignIn onLogin={(loginBlob) => this.props.doLogin(loginBlob)} />
+                    <MyAuth />
                     :
                     <div>
                         <div><br /><br />
