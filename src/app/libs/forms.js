@@ -148,6 +148,7 @@ export class RecordEditor extends Component {
     }
 
     setEdited = (e, { name, value, type, callback }) => {
+        console.log(name, value, type);
         e.preventDefault();
         if (isnotnull(value)) {
             var { values_dirty } = this.state;
