@@ -45,23 +45,9 @@ const fetchMe = (authToken) => fetchAPI(authToken, "me").then(res => res.json())
 const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
 const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
 
-
 // Instantiate a Firebase app.
 const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
 const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
-
-// function jwtToJson(token) {
-//     const base64Url = token.split('.')[1];
-//     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-//     const buff = new Buffer(base64, 'base64');
-//     const payloadinit = buff.toString('ascii');
-//     const payload = JSON.parse(payloadinit);
-//     return payload;
-// }
-
-/**
- * The Splash Page containing the login UI.
- */
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -171,8 +157,8 @@ export class MyAuth extends React.Component {
   
         
         return (
-            <div >
-                <Modal open={this.props.isOpenLoginForm}>
+            <div>
+                <Modal size="mini" open={this.props.isOpenLoginForm}>
                     {this.state.loading && <div><Dimmer active={true}><Loader active={true} /> </Dimmer></div>}
                     {!this.state.loading &&
                         <StyledFirebaseAuth
