@@ -14,7 +14,7 @@ import startCase from 'lodash/startCase';
 
 
 
-import { USERINFO, LOGINGS } from '../reducers/constants';
+import { USERINFO, LOGINGS, FETCHGS } from '../reducers/constants';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
 const arr2kv = (keys, vals) => {
@@ -141,6 +141,7 @@ export default {
     positions: (ls) => get(ls, [USERINFO, "positions"], []),
 
     getGS: (gs, ns, d) => get(gs, ns, d),
+    getFetchResult: (gs, key) => get(gs, [FETCHGS, key], null),
 
     getPS: (ls, ns, d = {}) => get(ls, ns, d),
 

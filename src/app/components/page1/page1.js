@@ -5,7 +5,6 @@ import { Segment, Button } from 'semantic-ui-react';
 
 import { RecordsTableWithEditor, gender_options, indiastate_options, validatePhoneNumber } from '../../libs/forms';
 import { fetchRecs, setRecsPBOneRun } from '../../libs/fetch';
-import { SignIn } from '../../auth/SignIn';
 
 import u from '../../libs/utils';
 

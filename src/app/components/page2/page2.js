@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { Segment, Button } from 'semantic-ui-react';
 
-import { SignIn } from '../../auth/SignIn';
 
 import u from '../../libs/utils';
 

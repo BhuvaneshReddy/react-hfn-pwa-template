@@ -16,3 +16,8 @@ export const LS_TRIGGER_FLUSH = 'TRIGGER_FLUSH';
 export const LOGIN_PROCESS_IT = "LOGIN_PROCESS_IT";
 export const USERINFO = "userinfo";
 export const LOGINGS = "logings";
+
+// fetch
+export const FETCH_PROFILE = "FETCH_PROFILE";
+export const FETCH_REG = "FETCH_REG";
+export const FETCHGS = "FETCHGS";

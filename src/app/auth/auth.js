@@ -10,7 +10,7 @@ import 'firebase/auth';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
-const fetchAPI = (authToken, api) => {
+export const fetchAPI = (authToken, api) => {
     const apiMap = {
         "get-token": {
             api: "/api/v2/secondary-firebase-token/",
@@ -36,11 +36,15 @@ const fetchAPI = (authToken, api) => {
         }
     };
 
-    return fetch(url, data);
+    if (api === 'get-token') {
+        return fetch(url, data).then(res => res.text())
+    } else {
+        return fetch(url, data).then(res => res.json())
+    }
 }
 
-const fetchT = (authToken) => fetchAPI(authToken, "get-token").then(res => res.text());
-const fetchMe = (authToken) => fetchAPI(authToken, "me").then(res => res.json()).then(res => res.results[0]);
+const fetchT = (authToken) => fetchAPI(authToken, "get-token");
+const fetchMe = (authToken) => fetchAPI(authToken, "me").then(res => res.results[0]);
 
 const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
 const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
@@ -94,17 +98,19 @@ export class MyAuth extends React.Component {
         const setLogout = this.props.doLogout;
 
         this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
-            console.log("1st Auth Firebase Response", user);
+            // console.log("1st Auth Firebase Response", user);
             if (!!user) {
                 const uid = user.uid;
                 user.getIdToken(false).then(function (idToken) {
                   //  console.log(idToken);
+                    console.log("Fetched 1st auth token");
                     setS({ loading: true });
                    
                    
                     fetchMe(idToken).then(myInfo => {
-                        console.log("MySRCM Me Response", myInfo);
-                        setLogin({ uid, myInfo })
+                        // console.log("MySRCM Me Response", myInfo);
+                        console.log("MySRCM Me Response")
+                        setLogin({ idToken, uid, myInfo })
                         setS({ loading: false });
 
                     }).catch(e => {
@@ -117,7 +123,8 @@ export class MyAuth extends React.Component {
                    //     console.log("MySRCM Response", res);
                         firebaseAppDflt.auth().signInWithCustomToken(res).then((r) => {
                     //        console.log("2nd Firebase Response", r);
-                            
+                            console.log("Fetched 2nd auth token");
+
   
                         }).catch(e => {
                             console.log("Error firebaseAppDflt: ", e);
@@ -158,7 +165,8 @@ export class MyAuth extends React.Component {
         
         return (
             <div>
-                <Modal size="mini" open={this.props.isOpenLoginForm}>
+                <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm()}>
+                    <Modal.Header>Sign-In to Heartfulness Profile</Modal.Header>
                     {this.state.loading && <div><Dimmer active={true}><Loader active={true} /> </Dimmer></div>}
                     {!this.state.loading &&
                         <StyledFirebaseAuth

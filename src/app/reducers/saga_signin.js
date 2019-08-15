@@ -1,6 +1,7 @@
 import { put, call } from 'redux-saga/effects';
-import { USERINFO, LSC_FLUSH_CACHE, LOGINGS } from './constants';
+import { USERINFO, LOGINGS } from './constants';
 import actions from '../actions/actions';
+import u from '../libs/utils';
 
 
 const updateLoginState = (dict) => (actions.setGS(LOGINGS, dict))
@@ -13,8 +14,7 @@ export function* processLogIn({ loginBlob, openLoginForm }) {
   console.log({ openLoginForm });
 
   if (loginBlob !== null && loginBlob !== undefined) {
-    const { uid, myInfo } = loginBlob;
-    yield put(updateUserInfoDict({ uid, myInfo }));
+    yield put(updateUserInfoDict(loginBlob));
 
     yield put(flushCache());
   }

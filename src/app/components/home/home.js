@@ -7,17 +7,18 @@ import u from '../../libs/utils';
 import 'semantic-ui-css/semantic.min.css';
 import { MyAuth, SignOut, SignIn } from '../../auth/auth';
 
+const FRES = 'fres';
+
 export default @connect(
   ({ localstorage: ls, globalstate: gs }) => ({
     loggedIn: u.loggedIn(ls),
     userName: u.userName(ls),
+    fres: u.getFetchResult(gs, FRES),
+    gs: gs,
   }),
   actions)
 class Home extends Component {
   render() {
-
-
-
     return (
       <div>
         <MyAuth/>
@@ -31,6 +32,14 @@ class Home extends Component {
         <br />
         <br />
         <Button href="#page2">Page 2</Button>
+        <br />
+        <br />
+        {this.props.loggedIn &&
+          <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>
+        }
+        <div>
+          {JSON.stringify(this.props.gs)}
+        </div>
      </div>
     );
   }

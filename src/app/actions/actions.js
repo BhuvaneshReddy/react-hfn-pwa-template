@@ -2,10 +2,9 @@ import {
     GS_SET, LSC_FLUSH_CACHE,
     LSC_UPDATE_LS_DICT, LSC_UPDATE_LS_DICT_DEEP, LSC_RESET_CACHE,
     LOGIN_PROCESS_IT, USERINFO,
-    LSC_HYDRATE_CACHE
+    LSC_HYDRATE_CACHE,
+    FETCH_PROFILE
 } from '../reducers/constants';
-
-// import { DBS_REGISTER } from '../reducers/constants';
 
 export default {
 
@@ -69,6 +68,10 @@ export default {
         openLoginForm: false
     }),
 
+    fetchProfile: (api, data, gs_result_at) => ({
+        type: FETCH_PROFILE,
+        api, data, gs_result_at
+    }),
 
 }
 
