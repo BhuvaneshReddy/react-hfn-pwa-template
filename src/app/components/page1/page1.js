@@ -9,7 +9,7 @@ import { fetchRecs, setRecsPBOneRun } from '../../libs/fetch';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { MyAuth } from '../../auth/auth';
+import { MyAuth } from '../../firebase/firebaseApp';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({

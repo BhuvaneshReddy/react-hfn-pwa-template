@@ -7,6 +7,8 @@ import u from '../libs/utils';
 // Firebase.
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
+
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
@@ -51,7 +53,8 @@ const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG
 
 // Instantiate a Firebase app.
 const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
-const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
+export const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
+
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -224,3 +227,25 @@ export class SignOut extends React.Component {
         )
     }
 }
+
+
+
+@connect(
+    ({ localstorage: ls }) => ({
+        loggedIn: u.loggedIn(ls),
+    }),
+)
+export class EnsureLogin extends React.Component {
+    render() {
+        if (this.props.loggedIn) {
+            return (this.props.children)
+        }
+        return (
+            <div>
+                <MyAuth />
+                <SignIn />
+            </div>
+
+        )
+    }
+} 

@@ -7,7 +7,7 @@ import { Segment, Button } from 'semantic-ui-react';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { MyAuth } from '../../auth/auth';
+import { MyAuth } from '../../firebase/firebaseApp';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
