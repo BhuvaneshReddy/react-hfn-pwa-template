@@ -52,11 +52,9 @@ const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
 const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
 
 // Instantiate a Firebase app.
-const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
+export const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
 const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
 
-const COLLECTION = 'JobApplications';
-export const firestore_ref = firebaseApp.firestore().collection(COLLECTION);
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({

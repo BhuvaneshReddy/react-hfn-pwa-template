@@ -16,5 +16,9 @@ export default [
     exact: true,
     component: import('../app/components/page2/page2'),
   },
-
+  {
+    path: '/firestore-users',
+    exact: true,
+    component: import('../app/components/firestore/users'),
+  },
 ];
