@@ -5,29 +5,21 @@ import actions from '../../actions/actions';
 import u from '../../libs/utils';
 
 import 'semantic-ui-css/semantic.min.css';
-import { MyAuth, SignOut, SignIn } from '../../firebase/firebaseApp';
-
+import { EnsureLogin, SignOut } from '../../firebase/firebaseApp';
 
 const FRES = 'fres';
 
-
-
 export default @connect(
   ({ localstorage: ls, globalstate: gs }) => ({
-    loggedIn: u.loggedIn(ls),
     userName: u.userName(ls),
     fres: u.getFetchResult(gs, FRES),
-    gs: gs,
   }),
   actions)
 class Home extends Component {
   render() {
     return (
       <div>
-        <MyAuth/>
         <h1>PWA with MySRCM APIs - Boilerplate</h1>
-        {this.props.userName}
-        {this.props.loggedIn ? <SignOut /> : <SignIn/>}
         <div>
         </div>
         <br/>
@@ -37,14 +29,24 @@ class Home extends Component {
         <Button href="#page2">Page 2</Button>
         <br />
         <br />
-        {this.props.loggedIn &&
-          <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>
-        }
+        <Button href="#/firestore-users">Page Users</Button>
         <br />
-        
-        <div>
-          {JSON.stringify(this.props.gs)}
-        </div>
+        <br />
+        <EnsureLogin>
+
+          <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>
+          <br />
+
+          <div> Fetch Me Output:
+          {JSON.stringify(this.props.fres)}
+          </div>
+          <br/><br/>
+          <div>
+            {this.props.userName}
+          </div>
+          <SignOut />
+        </EnsureLogin>
+
      </div>
     );
   }
