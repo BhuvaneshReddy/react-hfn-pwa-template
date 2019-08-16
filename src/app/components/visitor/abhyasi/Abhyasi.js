@@ -7,7 +7,9 @@ export default class Abhyasi extends Component {
     super(props);
     this.state = {
       scanning: false,
-      abhyasiBarCode: ""
+      abhyasiBarCode: "",
+      inDate: null,
+      inTime: null
     };
     this._scan = this._scan.bind(this);
     this._onDetected = this._onDetected.bind(this);
@@ -20,7 +22,10 @@ export default class Abhyasi extends Component {
   }
 
   _onDetected(result) {
-    this.setState({ abhyasiBarCode: result.codeResult.code });
+    this.setState({
+      abhyasiBarCode: result.codeResult.code,
+      inDate: new Date()
+    });
     this._scan();
     console.log("Scanned result", this.state.abhyasiBarCode);
   }
@@ -30,8 +35,17 @@ export default class Abhyasi extends Component {
   }
 
   _handleScanBarcode(event) {
-    this.setState({ abhyasiBarCode: event.target.value });
+    this._onDetected(event.target.value);
   }
+
+  handleChange = event => {
+    this.setState({ abhyasiBarCode: event.target.value });
+  };
+
+  handleFormSubmit = () => {
+    this.setState({ inDate: new Date() });
+    console.log("Submit Data", this.state);
+  };
 
   render() {
     return (
@@ -50,15 +64,18 @@ export default class Abhyasi extends Component {
           />
         ) : null}
         <br />
-        <Form>
-          <Form.Field inline>
+        <Form onSubmit={this.handleFormSubmit}>
+          <Form.Field>
             <label>Scanned Barcode</label>
             <input
               placeholder="Barcode Reader output will appear here"
-              onChange={this.handleScanBarcode}
+              value={this.state.abhyasiBarCode}
+              onChange={this.handleChange}
+              required
             />
             <br />
-            {this.state.code && <Button>Submit</Button>}
+            <br />
+            <Button primary>Submit</Button>
           </Form.Field>
         </Form>
       </Container>
