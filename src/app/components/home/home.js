@@ -23,16 +23,16 @@ class Home extends Component {
         <div>
         </div>
         <br />
-        <div>RegServer fetch / set APIs demo</div>
-        <Button href="#page1">Page 1</Button>
+        <div></div>
+        <Button href="#page1">RegServer fetch / set APIs demo</Button>
         <br />
         <br />
-        <div>ProfileServer APIs demo</div>
-        <Button href="#page2">Page 2</Button>
+        <div></div>
+        <Button href="#page2">ProfileServer APIs demo</Button>
         <br />
         <br />
-        <div>Firebase Cloudstore crud demo</div>
-        <Button href="#/firestore-users">Page 3</Button>
+        <div></div>
+        <Button href="#/firestore-users">Firebase Cloudstore crud demo</Button>
         <br />
         <br />
         <div>Signed-In Pages demo</div>
