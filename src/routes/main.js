@@ -1,20 +1,22 @@
-
-
 export default [
   {
-    path: '/',
+    path: "/",
     exact: true,
-    component: import('../app/components/home/home'),
+    component: import("../app/components/home/home")
   },
   {
-    path: '/page1',
+    path: "/page1",
     exact: true,
-    component: import('../app/components/page1/page1'),
+    component: import("../app/components/page1/page1")
   },
   {
-    path: '/page2',
+    path: "/page2",
     exact: true,
-    component: import('../app/components/page2/page2'),
+    component: import("../app/components/page2/page2")
   },
-
+  {
+    path: "/visitor",
+    exact: true,
+    component: import("../app/components/visitor/Visitor")
+  }
 ];
