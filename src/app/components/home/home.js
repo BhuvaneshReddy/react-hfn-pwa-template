@@ -5,7 +5,9 @@ import actions from '../../actions/actions';
 import u from '../../libs/utils';
 
 import 'semantic-ui-css/semantic.min.css';
-import { MyAuth, SignOut, SignIn } from '../../auth/auth';
+import { MyAuth, SignOut, SignIn, firestore_ref } from '../../auth/auth';
+
+import Users from "./../firestore/users";
 
 const FRES = 'fres';
 
@@ -37,6 +39,12 @@ class Home extends Component {
         {this.props.loggedIn &&
           <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>
         }
+        <br />
+        <br />
+        {/* {this.props.loggedIn &&
+          <Users firestore_ref={firestore_ref}/>
+        } */}
+        <Users firestore_ref={firestore_ref}/>
         <div>
           {JSON.stringify(this.props.gs)}
         </div>

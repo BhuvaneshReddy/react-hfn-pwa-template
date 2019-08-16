@@ -7,6 +7,8 @@ import u from '../libs/utils';
 // Firebase.
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
+
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
@@ -52,6 +54,9 @@ const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG
 // Instantiate a Firebase app.
 const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
 const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
+
+const COLLECTION = 'JobApplications';
+export const firestore_ref = firebaseApp.firestore().collection(COLLECTION);
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -165,7 +170,7 @@ export class MyAuth extends React.Component {
         
         return (
             <div>
-                <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm()}>
+                <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm}>
                     <Modal.Header>Sign-In to Heartfulness Profile</Modal.Header>
                     {this.state.loading && <div><Dimmer active={true}><Loader active={true} /> </Dimmer></div>}
                     {!this.state.loading &&
