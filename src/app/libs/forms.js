@@ -196,7 +196,9 @@ export class RecordEditor extends Component {
                         defaultValue={get(this.state, f.name)}
                         onChange={this.setEdited}
                     />
-                );
+								);
+						case 'image': 
+							return <input type="file" accept="image/*" />
             default:
                 return (
                     <Form.Input

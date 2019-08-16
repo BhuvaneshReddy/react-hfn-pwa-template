@@ -18,5 +18,15 @@ export default [
     path: "/visitor",
     exact: true,
     component: import("../app/components/visitor/Visitor")
+  },
+  {
+    path: "/visitor/abhyasi",
+    exact: true,
+    component: import("../app/components/visitor/abhyasi/Abhyasi")
+  },
+  {
+    path: "/visitor/non-abhyasi",
+    exact: true,
+    component: import("../app/components/visitor/non-abhyasi/NonAbhyasi")
   }
 ];
