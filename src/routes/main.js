@@ -20,13 +20,23 @@ export default [
     component: import("../app/components/visitor/Visitor")
   },
   {
-    path: "/visitor/abhyasi",
+    path: "/visitor/entry",
     exact: true,
-    component: import("../app/components/visitor/abhyasi/Abhyasi")
+    component: import("../app/components/visitor/entry/Entry")
   },
   {
-    path: "/visitor/non-abhyasi",
+    path: "/visitor/entry/abhyasi",
     exact: true,
-    component: import("../app/components/visitor/non-abhyasi/NonAbhyasi")
+    component: import("../app/components/visitor/entry/abhyasi/Abhyasi")
+  },
+  {
+    path: "/visitor/entry/non-abhyasi",
+    exact: true,
+    component: import("../app/components/visitor/entry/non-abhyasi/NonAbhyasi")
   }
+  // {
+  //   path: "/visitor/exit",
+  //   exact: true,
+  //   component: import("../app/components/visitor/exit")
+  // }
 ];

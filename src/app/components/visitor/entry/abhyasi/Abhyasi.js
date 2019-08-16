@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Header, Form, Button, Label, Container } from "semantic-ui-react";
-import BarCodeReader from "../../shared/BarCodeReader";
+import BarCodeReader from "../../../shared/BarCodeReader";
 
-import { firestore_ref } from "../../../auth/auth";
+import { firestore_ref } from "../../../../auth/auth";
 
 export default class Abhyasi extends Component {
   constructor(props) {
@@ -10,7 +10,6 @@ export default class Abhyasi extends Component {
     this.state = {
       scanning: false,
       abhyasiBarCode: "",
-      inDate: null,
       inTime: null
     };
     this._scan = this._scan.bind(this);
@@ -55,6 +54,7 @@ export default class Abhyasi extends Component {
       })
       .then(value => {
         console.log("Document added successfully");
+        this.setState({ abhyasiBarCode: "", inDate: null });
       });
   };
 

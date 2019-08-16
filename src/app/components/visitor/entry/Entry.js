@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Header, Button, Grid, Segment } from "semantic-ui-react";
-import actions from "../../actions/actions";
-import u from "../../libs/utils";
-import { MyAuth, SignIn } from "../../auth/auth";
+import actions from "../../../actions/actions";
+import u from "../../../libs/utils";
+// import { MyAuth, SignIn } from "../../auth/auth";
 
 @connect(
   ({ localstorage: ls, globalstate: gs }) => ({
@@ -12,7 +12,7 @@ import { MyAuth, SignIn } from "../../auth/auth";
   }),
   actions
 )
-export default class Visitor extends Component {
+export default class Entry extends Component {
   constructor(props) {
     super(props);
   }
@@ -36,12 +36,12 @@ export default class Visitor extends Component {
               <Header as="h2">Visitor Management System</Header>
 
               <Button.Group size="huge">
-                <Button primary href="#/visitor/entry">
-                  Entry
+                <Button primary href="#/visitor/entry/abhyasi">
+                  ABHYASI
                 </Button>
                 <Button.Or />
-                <Button color="red" href="#/visitor/exit">
-                  Exit
+                <Button color="orange" href="#/visitor/entry/non-abhyasi">
+                  NON ABHYASI
                 </Button>
               </Button.Group>
             </Grid.Column>

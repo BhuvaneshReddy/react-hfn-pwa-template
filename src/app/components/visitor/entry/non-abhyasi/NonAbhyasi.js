@@ -5,13 +5,13 @@ import { Segment, Button } from "semantic-ui-react";
 import {
   RecordsTableWithEditor,
   validatePhoneNumber
-} from "../../../libs/forms";
-import { fetchRecs, setRecsPBOneRun } from "../../../libs/fetch";
+} from "../../../../libs/forms";
+import { fetchRecs, setRecsPBOneRun } from "../../../../libs/fetch";
 
-import u from "../../../libs/utils";
+import u from "../../../../libs/utils";
 
-import actions from "../../../actions/actions";
-import { MyAuth } from "../../../auth/auth";
+import actions from "../../../../actions/actions";
+import { MyAuth } from "../../../../auth/auth";
 
 @connect(
   ({ localstorage: ls, globalstate: gs }) => ({
