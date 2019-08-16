@@ -227,3 +227,25 @@ export class SignOut extends React.Component {
         )
     }
 }
+
+
+
+@connect(
+    ({ localstorage: ls }) => ({
+        loggedIn: u.loggedIn(ls),
+    }),
+)
+export class EnsureLogin extends React.Component {
+    render() {
+        if (this.props.loggedIn) {
+            return (this.props.children)
+        }
+        return (
+            <div>
+                <MyAuth />
+                <SignIn />
+            </div>
+
+        )
+    }
+} 

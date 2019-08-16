@@ -1,7 +1,7 @@
 import { put, call, select } from 'redux-saga/effects';
 import { USERINFO,  FETCHGS } from './constants';
 import actions from '../actions/actions';
-import { fetchAPI } from '../auth/auth';
+import { fetchAPI } from '../firebase/firebaseApp';
 import u from '../libs/utils';
 
 const updateGS = (dict) => (actions.setGS(FETCHGS, dict))

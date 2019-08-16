@@ -5,7 +5,7 @@ import actions from '../../actions/actions';
 import u from '../../libs/utils';
 
 import 'semantic-ui-css/semantic.min.css';
-import { MyAuth, SignOut, SignIn } from '../../auth/auth';
+import { MyAuth, SignOut, SignIn } from '../../firebase/firebaseApp';
 
 
 const FRES = 'fres';

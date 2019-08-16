@@ -1,10 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux';
-import actions from '../../actions/actions';
-import u from '../../libs/utils';
 
 
-import { firebaseAppDflt, MyAuth, SignIn } from '../../auth/auth';
+import { firebaseAppDflt, EnsureLogin } from '../../firebase/firebaseApp';
 
 
 import UsersList from "./users-list";
@@ -12,13 +9,7 @@ import AddUser from "./add-user";
 
 const COLLECTION = 'JobApplications';
 
-export default @connect(
-    ({ localstorage: ls, globalstate: gs }) => ({
-        loggedIn: u.loggedIn(ls),
-        userName: u.userName(ls),
-    }),
-    actions)
-class Users extends React.Component {
+export default class Users extends React.Component {
 
     constructor(props) {
         super(props);
@@ -29,14 +20,10 @@ class Users extends React.Component {
     }
     
     render() {
-        if (! this.props.loggedIn) {
-            return <div><MyAuth/><Sign/></div>
-        }
+   
 
         return (
-            <div>
-                <MyAuth />
-                {this.props.userName}
+            <EnsureLogin>
                 <h3>Users</h3>
                 <br/>
                 <UsersList firestore_ref={this.state.firestore_ref} />
@@ -46,7 +33,7 @@ class Users extends React.Component {
                 <br/>
                 <hr />
                 <br/><br/><br/>
-            </div>
+            </EnsureLogin>
         )
     }
 }
