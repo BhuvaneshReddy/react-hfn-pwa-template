@@ -165,7 +165,7 @@ export class MyAuth extends React.Component {
         
         return (
             <div>
-                <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm()}>
+                <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm}>
                     <Modal.Header>Sign-In to Heartfulness Profile</Modal.Header>
                     {this.state.loading && <div><Dimmer active={true}><Loader active={true} /> </Dimmer></div>}
                     {!this.state.loading &&
