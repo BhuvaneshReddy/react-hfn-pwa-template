@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Header, Form, Button, Label, Container } from "semantic-ui-react";
 import BarCodeReader from "../../shared/BarCodeReader";
 
+import { firestore_ref } from "../../../auth/auth";
+
 export default class Abhyasi extends Component {
   constructor(props) {
     super(props);
@@ -45,6 +47,15 @@ export default class Abhyasi extends Component {
   handleFormSubmit = () => {
     this.setState({ inDate: new Date() });
     console.log("Submit Data", this.state);
+    firestore_ref
+      .collection("visitors")
+      .add({
+        abhyasiBarCode: this.state.abhyasiBarCode,
+        inTime: Date.now()
+      })
+      .then(value => {
+        console.log("Document added successfully");
+      });
   };
 
   render() {
