@@ -108,10 +108,10 @@ export class MyAuth extends React.Component {
             // console.log("1st Auth Firebase Response", user);
             if (!!user) {
                 const uid = user.uid;
+                setS({ loading: true });
                 user.getIdToken(false).then((idToken) => {
                   //  console.log(idToken);
                     console.log("Fetched 1st auth token");
-                    setS({ loading: true });
                    
                    
                     fetchMe().then(myInfo => {
@@ -172,12 +172,12 @@ export class MyAuth extends React.Component {
                 <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm}>
                     <Modal.Header>Sign-In to Heartfulness Profile</Modal.Header>
                     {this.state.loading && <div><Dimmer active={true}><Loader active={true} /> </Dimmer></div>}
-                    {!this.state.loading &&
                         <StyledFirebaseAuth
+                            
                             // className={styles.firebaseUi}
                             uiConfig={this.uiConfig}
                             firebaseAuth={firebaseApp.auth()} />
-                    }
+                    
                     {this.state.error && <div>Error in Authentication</div>}
                 </Modal>
 
