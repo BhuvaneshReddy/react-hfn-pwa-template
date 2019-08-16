@@ -81,7 +81,7 @@ export class MyAuth extends React.Component {
             firebase.auth.PhoneAuthProvider.PROVIDER_ID,
         ],
         callbacks: {
-            signInSuccessWithAuthResult: () => false,
+            signInSuccessWithAuthResult: () => this.processLogin(),
         },
     };
 
@@ -94,70 +94,54 @@ export class MyAuth extends React.Component {
         this.setState(d);
     }
 
-    /**
-     * @inheritDoc
-     */
-    componentWillMount() {
-        
+    processLogin = () => {
+        const user = firebaseApp.auth().currentUser;
         const setS = this.setS;
 
         const setLogin = this.props.doLogin;
         const setLogout = this.props.doLogout;
+        // console.log("1st Auth Firebase Response", user);
+        if (!!user) {
+            const uid = user.uid;
+            setS({ loading: true });
 
-        this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
-            // console.log("1st Auth Firebase Response", user);
-            if (!!user) {
-                const uid = user.uid;
-                setS({ loading: true });
-                user.getIdToken(false).then((idToken) => {
-                  //  console.log(idToken);
-                    console.log("Fetched 1st auth token");
-                   
-                   
-                    fetchMe().then(myInfo => {
-                        // console.log("MySRCM Me Response", myInfo);
-                        console.log("MySRCM Me Response")
-                        setLogin({ idToken, uid, myInfo })
-                        setS({ loading: false });
+            console.log("Fetched 1st auth token");
 
-                    }).catch(e => {
-                        console.log("Error fetchMe: ", e);
-                        setS({ loading: false, error: true })
 
-                    });
+            fetchMe().then(myInfo => {
+                // console.log("MySRCM Me Response", myInfo);
+                console.log("MySRCM Me Response")
+                setLogin({ uid, myInfo })
+                setS({ loading: false });
 
-                    fetchT().then(res => {
-                   //     console.log("MySRCM Response", res);
-                        firebaseAppDflt.auth().signInWithCustomToken(res).then((r) => {
+            }).catch(e => {
+                console.log("Error fetchMe: ", e);
+                setS({ loading: false, error: true })
+
+            });
+
+            fetchT().then(res => {
+                //     console.log("MySRCM Response", res);
+                firebaseAppDflt.auth().signInWithCustomToken(res).then((r) => {
                     //        console.log("2nd Firebase Response", r);
-                            console.log("Fetched 2nd auth token");
+                    console.log("Fetched 2nd auth token");
 
-                        }).catch(e => {
-                            console.log("Error firebaseAppDflt: ", e);
-                            setS({ loading: false, error: true })
-                        });;
-                    }).catch(e => {
-                        console.log("Error fetchT: ", e);
-                        setS({ loading: false, error: true })
-                    });
-
-                }).catch(function (error) {
-                    // Handle error
-                    console.log("Error getIdToken: ", error);
+                }).catch(e => {
+                    console.log("Error firebaseAppDflt: ", e);
                     setS({ loading: false, error: true })
-                });
-            } else {
-                setLogout();
-            }
-        });
+                });;
+            }).catch(e => {
+                console.log("Error fetchT: ", e);
+                setS({ loading: false, error: true })
+            });
+
+
+        } else {
+            setLogout();
+        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    componentWillUnmount() {
-        this.unregisterAuthObserver();
-    }
+ 
 
     /**
      * @inheritDoc
