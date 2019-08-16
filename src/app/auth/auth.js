@@ -52,8 +52,8 @@ const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
 const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
 
 // Instantiate a Firebase app.
-export const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
-const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
+const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
+export const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
 
 
 @connect(
