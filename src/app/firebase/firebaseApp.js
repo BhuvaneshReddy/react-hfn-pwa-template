@@ -12,41 +12,8 @@ import 'firebase/firestore';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
-export const fetchAPI = (authToken, api) => {
-    const apiMap = {
-        "get-token": {
-            api: "/api/v2/secondary-firebase-token/",
-            method: "POST",
-            extraHdrs: {
-                'Postman-Token': process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN,
-                'cache-control': 'no-cache',
-            }
-        },
-        "me": { api: "/api/v2/me/", method: "GET", extraHdrs: {} },        
-    }
-
-    const url = process.env.REACT_APP_PROFILE_SERVER + apiMap[api].api;
-    const method = apiMap[api].method;
-    var data = {
-        method,
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'x-client-id': process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID, 
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-            ...(apiMap[api].extraHdrs),
-        }
-    };
-
-    if (api === 'get-token') {
-        return fetch(url, data).then(res => res.text())
-    } else {
-        return fetch(url, data).then(res => res.json())
-    }
-}
-
-const fetchT = (authToken) => fetchAPI(authToken, "get-token");
-const fetchMe = (authToken) => fetchAPI(authToken, "me").then(res => res.results[0]);
+const fetchT = () => fetchAPI("get-token");
+const fetchMe = () => fetchAPI("me").then(res => res.results[0]);
 
 const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
 const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
@@ -55,6 +22,43 @@ const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG
 const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
 export const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
 
+export const fetchAPI = (api) => {
+    return firebaseApp.auth().currentUser.getIdToken().then(authToken => {
+        const apiMap = {
+            "get-token": {
+                api: "/api/v2/secondary-firebase-token/",
+                method: "POST",
+                extraHdrs: {
+                    'Postman-Token': process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN,
+                    'cache-control': 'no-cache',
+                }
+            },
+            "me": { api: "/api/v2/me/", method: "GET", extraHdrs: {} },
+            "groups": { api: "/api/v2/groups/", method: "GET", extraHdrs: {} },
+            "meditation-centers": { api: "/api/v2/meditation-centers/", method: "GET", extraHdrs: {} },
+        }
+
+        const url = process.env.REACT_APP_PROFILE_SERVER + apiMap[api].api;
+        const method = apiMap[api].method;
+        var data = {
+            method,
+            headers: {
+                'Authorization': 'Bearer ' + authToken,
+                'x-client-id': process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID,
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                ...(apiMap[api].extraHdrs),
+            }
+        };
+
+        if (api === 'get-token') {
+            return fetch(url, data).then(res => res.text())
+        } else {
+            return fetch(url, data).then(res => res.json())
+        }
+    });
+
+}
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -104,13 +108,13 @@ export class MyAuth extends React.Component {
             // console.log("1st Auth Firebase Response", user);
             if (!!user) {
                 const uid = user.uid;
-                user.getIdToken(false).then(function (idToken) {
+                user.getIdToken(false).then((idToken) => {
                   //  console.log(idToken);
                     console.log("Fetched 1st auth token");
                     setS({ loading: true });
                    
                    
-                    fetchMe(idToken).then(myInfo => {
+                    fetchMe().then(myInfo => {
                         // console.log("MySRCM Me Response", myInfo);
                         console.log("MySRCM Me Response")
                         setLogin({ idToken, uid, myInfo })
@@ -122,13 +126,12 @@ export class MyAuth extends React.Component {
 
                     });
 
-                    fetchT(idToken).then(res => {
+                    fetchT().then(res => {
                    //     console.log("MySRCM Response", res);
                         firebaseAppDflt.auth().signInWithCustomToken(res).then((r) => {
                     //        console.log("2nd Firebase Response", r);
                             console.log("Fetched 2nd auth token");
 
-  
                         }).catch(e => {
                             console.log("Error firebaseAppDflt: ", e);
                             setS({ loading: false, error: true })
@@ -164,8 +167,6 @@ export class MyAuth extends React.Component {
             return null
         }
 
-  
-        
         return (
             <div>
                 <Modal size="mini" open={this.props.isOpenLoginForm} closeIcon onClose={this.props.cancelLoginForm}>
@@ -228,8 +229,6 @@ export class SignOut extends React.Component {
     }
 }
 
-
-
 @connect(
     ({ localstorage: ls }) => ({
         loggedIn: u.loggedIn(ls),
@@ -245,7 +244,6 @@ export class EnsureLogin extends React.Component {
                 <MyAuth />
                 <SignIn />
             </div>
-
         )
     }
 } 

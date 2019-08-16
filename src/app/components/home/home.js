@@ -22,16 +22,20 @@ class Home extends Component {
         <h1>PWA with MySRCM APIs - Boilerplate</h1>
         <div>
         </div>
-        <br/>
+        <br />
+        <div>RegServer fetch / set APIs demo</div>
         <Button href="#page1">Page 1</Button>
         <br />
         <br />
+        <div>ProfileServer APIs demo</div>
         <Button href="#page2">Page 2</Button>
         <br />
         <br />
-        <Button href="#/firestore-users">Page Users</Button>
+        <div>Firebase Cloudstore crud demo</div>
+        <Button href="#/firestore-users">Page 3</Button>
         <br />
         <br />
+        <div>Signed-In Pages demo</div>
         <EnsureLogin>
 
           <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>

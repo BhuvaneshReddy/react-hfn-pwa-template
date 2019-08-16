@@ -152,8 +152,8 @@ function fetchPOST_enc(url, payload = {}) {
     };
     return fetch(url, params)
         .then((R) => R.json())
-        //.then(resp => {u.log(resp); return resp})
-        .then((resp) => u.jsonparse(decode(token, resp), false))
+        //.then(resp => {console.log(resp); return resp})
+        .then((resp) => JSON.parse(decode(token, resp), false))
 }
 
 function fetchPOST_enc_params(url, payload = {}) {
@@ -176,7 +176,7 @@ function fetchPOST_enc_params(url, payload = {}) {
  *
  * @param {Object} runs - Dict of Piggyback Queries
  */
-// const fetchPB = (runs) => fetchSRPB({}, runs).then(res => res.piggyback);
+const fetchPB = (runs) => fetchSRPB({}, runs).then(res => res.piggyback);
 
 /**
  *
@@ -189,11 +189,11 @@ function fetchPOST_enc_params(url, payload = {}) {
  * @param {Array} recs - Array of Set Records
  * @param {Object} runs - Dict of Piggyback Queries
  */
-// const fetchSRPB = (recs, runs) =>
-//     fetchPOST_enc(env.registrations_server + '/api/v3/qrun', { setrecs: recs, piggyback: runs });
+const fetchSRPB = (recs, runs) =>
+    fetchPOST_enc(env.registrations_server + '/api/v3/qrun', { setrecs: recs, piggyback: runs });
 
 
-// const fetchAggregates = (qrun) => fetchPB({ qrun }).then(pb => pb.qrun);
+export const fetchAggregates = (qrun) => fetchPB({ qrun }).then(pb => pb.qrun);
 
 // getRestChain: to retrieve multiple runs by passing a chain
 /*
@@ -258,26 +258,7 @@ export const setRecsPBOneRun = (recs, run) => setRecs(recs, [run]).then(ret => r
 
 
 
-// function fetchGroups(parent) {
-//     var url = env.profile_server + '/api/v2/groups/?active=true&parent=' + parent;
-//     return fetch(url).then((Response) => Response.json()).then((resp) => {
-//         return resp['results'];
-//     }).catch((error) => {
-//         alert("Error Retrieving groups list:" + error);
-//     });
-// }
 
 // const pingReg = () => fetch(env.registrations_server + "/reg/");
 
-
-// function fetchAllZones() {
-//     var group_type = "&group_type=zone&page_size=400";
-//     var url = env.profile_server + '/api/v2/groups/?active=true' + group_type;
-//     return fetch(url).then((Response) => Response.json()).then((resp) => {
-//         return resp['results']
-//             .filter((record) => { return record.group_type in { 'zone': 1 } });
-//     }).catch((error) => {
-//         alert("Error Retrieving groups list:" + error);
-//     });
-// }
 

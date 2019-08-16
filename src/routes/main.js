@@ -9,12 +9,12 @@ export default [
   {
     path: '/page1',
     exact: true,
-    component: import('../app/components/page1/page1'),
+    component: import('../app/components/page1-regserver/page1'),
   },
   {
     path: '/page2',
     exact: true,
-    component: import('../app/components/page2/page2'),
+    component: import('../app/components/page2-profileserver/page2'),
   },
   {
     path: '/firestore-users',

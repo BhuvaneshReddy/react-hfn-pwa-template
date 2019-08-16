@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Segment, Button } from 'semantic-ui-react';
 
 import { RecordsTableWithEditor, gender_options, indiastate_options, validatePhoneNumber } from '../../libs/forms';
-import { fetchRecs, setRecsPBOneRun } from '../../libs/fetch';
+import { fetchRecs, setRecsPBOneRun, fetchAggregates } from '../../libs/fetch';
 
 import u from '../../libs/utils';
 
@@ -25,7 +25,7 @@ class TableAndForm extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({ is_create: true, data_orig: [], fetchme: null })
+        this.setState({ loading: false, output: null, is_create: true, data_orig: [], fetchme: null })
         if (this.props.loggedIn) {
             this.reload()
         }
@@ -142,12 +142,34 @@ class TableAndForm extends React.Component {
 }
 
 class Page1 extends Component {
+    componentWillMount() { 
+        this.setState({ loading: false, output: null });
+    }
+    
     render() {
+        const qrun = {
+            "m": ["avr_pages"],
+            "gf": ["key"],
+            "cf": ['id'],
+        };
+
         return (
             <div>
                 <Segment color="blue">Page 1  </Segment>
                 <Segment color="green">
                     <TableAndForm />
+                </Segment>
+                <Segment color="olive">
+                    <Button content="Aggregate Query"
+                        onClick={() => {
+                            this.setState({ loading: true });
+                            fetchAggregates(qrun).then(output => this.setState({
+                                loading: false,
+                                output
+                            }))
+                        }}
+                    />
+                    {this.state.output && JSON.stringify(this.state.output)}
                 </Segment>
             </div>
         );
