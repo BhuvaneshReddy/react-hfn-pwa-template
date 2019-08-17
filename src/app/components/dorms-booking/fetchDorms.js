@@ -26,7 +26,7 @@ class DormsPage extends React.Component {
 
     componentWillMount() {
         this.setState({ loading: false, output: null, is_create: true, data_orig: [], fetchme: null })
-        this.setState({ loading: false, output: null, claim_key: "XYZ", owner_data: this.props.loggedIn });
+        this.setState({ loading: false, output: null, claim_key: "XYZ", owner_data: this.props.userName });
 
         if (this.props.loggedIn) {
             this.reload()
