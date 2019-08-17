@@ -18,7 +18,7 @@ import { MyAuth, EnsureLogin } from '../../firebase/firebaseApp';
     }),
     actions
 )
-class TableAndForm extends React.Component {
+class DormsPage extends React.Component {
     constructor(props) {
         super(props);
         this.SaveOrDelete = this.SaveOrDelete.bind(this);
@@ -26,6 +26,8 @@ class TableAndForm extends React.Component {
 
     componentWillMount() {
         this.setState({ loading: false, output: null, is_create: true, data_orig: [], fetchme: null })
+        this.setState({ loading: false, output: null, claim_key: "XYZ", owner_data: this.props.loggedIn });
+
         if (this.props.loggedIn) {
             this.reload()
         }
@@ -64,6 +66,40 @@ class TableAndForm extends React.Component {
         };
         this.reload(setrec);
     }
+
+    lockBed(l1, l2, l3, claim_key, owner_data) {
+        const setrec = {
+            m: 'avr.resource.reserve',
+            c: ['&', '&',  ['l1', '=', l1], ['l2', '=', l2], ['l3', '=', l3] ],
+            v: {claim_key, status: 'blocked', owner_data},
+        };
+        this.reload(setrec);
+
+        this.setState({ output: null})
+    }
+
+    releaseBed(l1, l2, l3, claim_key) {
+        const setrec = {
+            m: 'avr.resource.reserve',
+            c: ['&', '&', ['l1', '=', l1], ['l2', '=', l2], ['l3', '=', l3]],
+            v: { claim_key, status: 'free' },
+        };
+        this.reload(setrec);
+        this.setState({ output: null })
+
+    }
+
+    ownBed(l1, l2, l3, claim_key, owner_data) {
+        const setrec = {
+            m: 'avr.resource.reserve',
+            c: ['&', '&', ['l1', '=', l1], ['l2', '=', l2], ['l3', '=', l3]],
+            v: { claim_key, status: 'owned', owner_data },
+        };
+        this.reload(setrec);
+        this.setState({ output: null })
+
+    }
+
     render() {
         const table_columns = [
             { header: 'Group', column: 'l1' },
@@ -78,8 +114,29 @@ class TableAndForm extends React.Component {
             { name: "l3", required: true, label: "Bed", type: "text" },
             { name: "status", required: true, label: "Status", type: "text" },
         ]
+
+        const buttons = {
+            freerooms: {
+                "m": ["avr_resource_reserve"],
+                "gf": ["l1", "l2"],
+                "cf": ['id'],
+                "c": [['status', '=', 'free']],
+                "hr": ['Group', 'Room', "Free"]
+            },
+            bedstatus: {
+                "m": ["avr_resource_reserve"],
+                "f": ["l1", "l2", "l3", "status", "owner_data"],
+                "c": [ '&', ['l1', '=', 'batch1'], ['l2', '=', 'BG1']],
+                "hr": ['Group', 'Room', 'Bed', "Status", "Owned By"]
+            }
+        };
+
+        const button_map = { freerooms: "Free Rooms", bedstatus: "Bed Status" };
+
         return (
             <EnsureLogin>
+                <Segment color="blue">Page showing APIs for Dorm Booking  </Segment>
+
                     <div>
                         <div>
                             <RecordsTableWithEditor
@@ -106,77 +163,72 @@ class TableAndForm extends React.Component {
                 <Button onClick={this.reload}>Refresh</Button>
 
                 
+                <div>
+              
+                    <Segment color="olive">
+                        {Object.entries(button_map).map(e =>
+                            <Button key={e[0]} content={e[1]}
+                                onClick={() => {
+                                    this.setState({ loading: true });
+                                    fetchAggregates(buttons[e[0]]).then(output => this.setState({
+                                        loading: false,
+                                        output,
+                                        button_clicked: e[0],
+                                    }))
+                                }}
+                            />)
+                        }
+                        {this.state.output &&
+                            <div>
+
+                                <Table>
+                                    <thead><tr>
+                                        {this.state.output.header.map((x, y) => <td key={y}>{x}</td>)}
+                                    </tr></thead>
+
+                                    <tbody>
+                                        {
+                                            this.state.output.rows.map((row, ridx) => <tr key={ridx}> {
+                                                row.map((cell, cidx) => <td key={cidx}>{cell}</td>)
+
+                                            }
+                                                {
+                                                    this.state.button_clicked === 'bedstatus' &&
+                                                    <td>
+                                                        <Button onClick={() => this.releaseBed(row[0], row[1], row[2], this.state.claim_key)}>Release Bed</Button>
+                                                    </td>
+                                                }
+
+                                                {
+                                                    this.state.button_clicked === 'bedstatus' &&
+                                                    <td>
+                                                        <Button onClick={() => this.lockBed(row[0], row[1], row[2], this.state.claim_key, this.state.owner_data)}>Block Bed</Button>
+                                                    </td>
+                                                }
+                                    
+                                                {
+                                                    this.state.button_clicked === 'bedstatus' &&
+                                                    <td>
+                                                        <Button onClick={() => this.ownBed(row[0], row[1], row[2], this.state.claim_key, this.state.owner_data)}>Own Bed</Button>
+                                                    </td>
+                                                }
+
+                                            </tr>)
+                                        }
+                                    </tbody>
+
+                                </Table>
+                            </div>
+                        }
+                    </Segment>
+                </div>
+
             </EnsureLogin>
         )
     }
 }
 
-class DormsPage extends Component {
-    componentWillMount() {
-        this.setState({ loading: false, output: null });
-    }
 
-    render() {
-        const buttons = {
-            freerooms: {
-                "m": ["avr_resource_reserve"],
-                "gf": ["l1", "l2"],
-                "cf": ['id'],
-                "c": [['status', '=', 'free']],
-                "hr": ['Group', 'Room', "Free"]
-            },
-            bedstatus: {
-                "m": ["avr_resource_reserve"],
-                "f": ["l1", "l2", "l3", "status"],
-                "c": [['claim_key', '=', 'xyz' ]],
-                "hr": ['Group', 'Room', 'Bed', "Status"]
-            }
-        };
 
-        const button_map = { freerooms: "Free Rooms", bedstatus: "Bed Status" };
-
-        return (
-            <div>
-                <Segment color="blue">Page showing APIs for Dorm Booking  </Segment>
-                <Segment color="green">
-                    <TableAndForm />
-                </Segment>
-                <Segment color="olive">
-                    {Object.entries(button_map).map(e => 
-                    <Button key={e[0]} content={e[1]}
-                        onClick={() => {
-                            this.setState({ loading: true });
-                            fetchAggregates(buttons[e[0]]).then(output => this.setState({
-                                loading: false,
-                                output
-                            }))
-                        }}
-                    />)
-                    }
-                    {this.state.output &&
-                        <div>
-
-                            <Table>
-                                <thead><tr>
-                                {this.state.output.header.map((x,y) => <td key={y}>{x}</td>)}
-                            </tr></thead>
-
-                            <tbody>
-                                {
-                                    this.state.output.rows.map((row, ridx) => <tr key={ridx}> {
-                                        row.map((cell, cidx) => <td key={cidx}>{cell}</td>)
-
-                                    } </tr>)
-                                }
-                            </tbody>
-
-                            </Table>
-                        </div>
-                    }
-                </Segment>
-            </div>
-        );
-    }
-}
 
 export default DormsPage;
