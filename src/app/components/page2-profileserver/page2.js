@@ -7,7 +7,9 @@ import { Segment, Button, Dimmer, Loader } from 'semantic-ui-react';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { EnsureLogin, fetchProfileAPI } from '../../firebase/firebaseApp';
+import { fetchProfileAPI } from '../../firebase/firebaseLib';
+import { EnsureLogin } from '../../firebase/firebaseApp';
+
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({

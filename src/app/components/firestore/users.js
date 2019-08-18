@@ -1,7 +1,8 @@
 import React from 'react'
 
 
-import { firebaseApp, EnsureLogin } from '../../firebase/firebaseApp';
+import {  EnsureLogin } from '../../firebase/firebaseApp';
+import { firebaseApp } from '../../firebase/firebaseLib';
 
 
 import UsersList from "./users-list";
