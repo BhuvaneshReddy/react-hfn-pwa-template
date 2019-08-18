@@ -26,4 +26,14 @@ export default [
     exact: true,
     component: import('../app/components/dorms-booking/fetchDorms'),
   },
+  {
+    path: '/comfort-dorm',
+    exact: true,
+    component: import('../app/components/comfortDorm/comfortDorm'),
+  },
+  {
+    path: '/room-selection',
+    exact: true,
+    component: import('../app/components/comfortDorm/room-selection/roomSelection.js'),
+  }
 ];

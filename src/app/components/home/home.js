@@ -35,6 +35,9 @@ class Home extends Component {
         <Button href="#/firestore-users">Firebase Cloudstore crud demo</Button>
         <br />
         <br />
+        <Button href="#/comfort-dorm">Comfort Dorm</Button>
+        <br />
+        <br />
         <div>Signed-In Pages demo</div>
         <EnsureLogin>
 
