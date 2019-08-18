@@ -7,7 +7,6 @@ import u from '../libs/utils';
 import { Button, Modal } from 'semantic-ui-react';
 import { MyFirebaseAuth, myFirebaseAuthSignOut } from './firebaseLib';
 
-
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
         loggedIn: u.loggedIn(ls),
@@ -30,6 +29,7 @@ export class MyAuth extends React.Component {
                         doLogin={this.props.doLogin}
                         doLogout={this.props.doLogout}
                     />
+
                 </Modal>
             </div>
         );
@@ -74,6 +74,7 @@ export class SignOut extends React.Component {
         return (this.props.loggedIn && (!this.props.isOpenLoginForm) && <div>
             <Button content="Sign Out" onClick={() => {
                 myFirebaseAuthSignOut().then(() => setLogout())
+
             }} />
         </div>
         )
