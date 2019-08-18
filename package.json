@@ -32,7 +32,7 @@
   "dependencies": {
     "@pawjs/redux": "^2.1.6",
     "classnames": "^2.2.6",
-    "firebase": "^6.3.5",
+    "firebase": "^6.4.0",
     "google-libphonenumber": "^3.2.3",
     "js-base64": "^2.5.1",
     "lodash": "^=4.17.14",
