@@ -10,30 +10,48 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 import { BeatLoader } from 'react-spinners';
 
-let firebaseConfig = null;
-let firebaseConfigDflt = null;
-try {
-    firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
-} catch (e) {
-    console.error("Error: REACT_APP_FIREBASE_AUTH_CONFIG not set properly")
-}
-try {
-    firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
-} catch (e) {
-    console.warn("Note: REACT_APP_FIREBASE_DFLT_CONFIG not set properly")
+
+function readConfigFromEnv() {
+        let firebaseConfig = null;
+        let firebaseConfigDflt = null;
+        let mysrcmConfig = null;
+        try {
+            firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
+        } catch (e) {
+            console.error("Error: REACT_APP_FIREBASE_AUTH_CONFIG not set properly")
+        }
+        try {
+            firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
+        } catch (e) {
+            console.warn("Note: REACT_APP_FIREBASE_DFLT_CONFIG not set properly")
+        }
+        try {
+            mysrcmConfig = JSON.parse(process.env.REACT_APP_MYSRCM_CONFIG);
+            const dummy1 = mysrcmConfig['profileServer']
+            const dummy2 = mysrcmConfig['postmanToken'];
+            const dummy3 = mysrcmConfig['xClientId'];
+            if (!dummy1 || !dummy2 || !dummy3) {
+                console.error("Error: REACT_APP_MYSRCM_CONFIG not set properly")
+            }
+        } catch (e) {
+            console.error("Error: REACT_APP_MYSRCM_CONFIG not set properly")
+        }
+
+    return { firebaseConfig, firebaseConfigDflt, mysrcmConfig };
 }
 
-let mysrcmPostmanToken = null;
-let mysrcmProfileServer = null;
-let mysrcmClientId = null;
-try {
-    mysrcmPostmanToken = process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN;
-    mysrcmProfileServer = process.env.REACT_APP_PROFILE_SERVER;
-    mysrcmClientId = process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID;
-} catch (e) {
-    console.error("Error: REACT_APP_MYSRCM_POSTMAN_TOKEN or REACT_APP_PROFILE_SERVER or REACT_APP_MYSRCM_FIREBASE_CLIENTID not set properly")
-}
+function readConfigFromDom() {
+    const denv = document.getElementById('hfn-react-profile-data');
+    if (isnotnull(denv)) {
+        env = JSON.parse(decode1("X", denv.dataset.env));
+        return env;
+    } else {
+        alert("Invalid ENV Configuration for Profile Login");
+    }
+    // XXX need to implement this fully
+} 
 
+const { firebaseConfig, firebaseConfigDflt, mysrcmConfig } = readConfigFromEnv();
 
 // Instantiate a Firebase app.
 const firebaseAppAuth = firebase.initializeApp(firebaseConfig, "auth");
@@ -49,7 +67,7 @@ export const fetchProfileAPI = (api, method = "GET", extraHdrs = {}, extraData =
         _api = "/api/v2/secondary-firebase-token/";
         _method = "POST";
         _headers = {
-            'Postman-Token': mysrcmPostmanToken,
+            'Postman-Token': mysrcmConfig.postmanToken,
             'cache-control': 'no-cache',
         };
     } else if (api.startsWith('/api/v2/')) {
@@ -57,7 +75,7 @@ export const fetchProfileAPI = (api, method = "GET", extraHdrs = {}, extraData =
     } else {
         _api = "/api/v2/" + api + "/";
     }
-    const url = mysrcmProfileServer + _api;
+    const url = mysrcmConfig.profileServer + _api;
 
     return firebaseAppAuth.auth().currentUser.getIdToken().then(authToken => {
 
@@ -65,7 +83,7 @@ export const fetchProfileAPI = (api, method = "GET", extraHdrs = {}, extraData =
             method: _method,
             headers: {
                 'Authorization': 'Bearer ' + authToken,
-                'x-client-id': mysrcmClientId,
+                'x-client-id': mysrcmConfig.xClientId,
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json',
                 ...(_headers),
