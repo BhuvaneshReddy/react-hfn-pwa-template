@@ -25,17 +25,26 @@ function readConfigFromEnv() {
         } catch (e) {
             console.warn("Note: REACT_APP_FIREBASE_DFLT_CONFIG not set properly")
         }
+    try {
+        mysrcmConfig = JSON.parse(process.env.REACT_APP_MYSRCM_CONFIG);
+        const dummy1 = mysrcmConfig['profileServer']
+        const dummy2 = mysrcmConfig['postmanToken'];
+        const dummy3 = mysrcmConfig['xClientId'];
+        if (!dummy1 || !dummy2 || !dummy3) {
+            console.error("Error: REACT_APP_MYSRCM_CONFIG not set properly")
+        }
+    } catch (e) {
         try {
-            mysrcmConfig = JSON.parse(process.env.REACT_APP_MYSRCM_CONFIG);
-            const dummy1 = mysrcmConfig['profileServer']
-            const dummy2 = mysrcmConfig['postmanToken'];
-            const dummy3 = mysrcmConfig['xClientId'];
-            if (!dummy1 || !dummy2 || !dummy3) {
-                console.error("Error: REACT_APP_MYSRCM_CONFIG not set properly")
+            // backward compatibility -- remove this.
+            mysrcmConfig = {
+                profileServer: process.env.REACT_APP_PROFILE_SERVER,
+                postmanToken: process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN,
+                xClientId: process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID,
             }
         } catch (e) {
             console.error("Error: REACT_APP_MYSRCM_CONFIG not set properly")
         }
+    }
 
     return { firebaseConfig, firebaseConfigDflt, mysrcmConfig };
 }
