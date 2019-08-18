@@ -183,11 +183,11 @@ export class MyFirebaseAuth extends React.Component {
                 {this.state.loading && <BeatLoader
                     loading={true}
                 />}
-                {(!(firebaseAppAuth.auth().currentUser)) && <StyledFirebaseAuth
+                 <StyledFirebaseAuth
                     uiConfig={this.uiConfig}
                     firebaseAuth={firebaseAppAuth.auth()}
                 />
-                }
+                
                 {this.state.error && <div>Error in Authentication</div>}
             </div>
         )
