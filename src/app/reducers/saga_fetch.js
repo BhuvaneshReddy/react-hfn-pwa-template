@@ -3,7 +3,7 @@ import { put, call } from 'redux-saga/effects';
 import { FETCHGS } from './constants';
 // import { USERINFO } from './constants';
 import actions from '../actions/actions';
-import { fetchProfileAPI } from '../firebase/firebaseLib';
+import { fetchProfileAPI } from '@heartfulnessinstitute/react-hfn-profile';
 
 // import u from '../libs/utils';
 

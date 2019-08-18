@@ -5,7 +5,7 @@ import actions from '../actions/actions';
 import u from '../libs/utils';
 
 import { Button, Modal } from 'semantic-ui-react';
-import { MyFirebaseAuth, myFirebaseAuthSignOut } from './firebaseLib';
+import { MyFirebaseAuth, myFirebaseAuthSignOut } from '@heartfulnessinstitute/react-hfn-profile';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({

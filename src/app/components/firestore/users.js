@@ -2,7 +2,7 @@ import React from 'react'
 
 
 import {  EnsureLogin } from '../../firebase/firebaseApp';
-import { firebaseApp } from '../../firebase/firebaseLib';
+import { firebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
 
 
 import UsersList from "./users-list";
