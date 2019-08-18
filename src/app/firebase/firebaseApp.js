@@ -12,43 +12,69 @@ import 'firebase/firestore';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
-const fetchT = () => fetchAPI("get-token");
-const fetchMe = () => fetchAPI("me").then(res => res.results[0]);
+const fetchT = () => fetchProfileAPI("get-token");
+const fetchMe = () => fetchProfileAPI("me").then(res => res.results[0]);
 
-const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
-const firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
-
+let firebaseConfig = null;
+let firebaseConfigDflt = null;
+try {
+    firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_AUTH_CONFIG);
+} catch (e) {
+    console.error("Error: REACT_APP_FIREBASE_AUTH_CONFIG not set properly")
+}
+try {
+    firebaseConfigDflt = JSON.parse(process.env.REACT_APP_FIREBASE_DFLT_CONFIG);
+} catch (e) {
+    console.warn("Note: REACT_APP_FIREBASE_DFLT_CONFIG not set properly")
+}
 // Instantiate a Firebase app.
-const firebaseApp = firebase.initializeApp(firebaseConfig, "auth");
-export const firebaseAppDflt = firebase.initializeApp(firebaseConfigDflt);
+const firebaseAppAuth = firebase.initializeApp(firebaseConfig, "auth");
+export const firebaseApp = ((firebaseConfigDflt !== null) ?  firebase.initializeApp(firebaseConfigDflt) : null);
 
-export const fetchAPI = (api) => {
-    return firebaseApp.auth().currentUser.getIdToken().then(authToken => {
-        const apiMap = {
-            "get-token": {
-                api: "/api/v2/secondary-firebase-token/",
-                method: "POST",
-                extraHdrs: {
-                    'Postman-Token': process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN,
-                    'cache-control': 'no-cache',
-                }
-            },
-            "me": { api: "/api/v2/me/", method: "GET", extraHdrs: {} },
-            "groups": { api: "/api/v2/groups/", method: "GET", extraHdrs: {} },
-            "meditation-centers": { api: "/api/v2/meditation-centers/", method: "GET", extraHdrs: {} },
-        }
+let mysrcmPostmanToken = null;
+let mysrcmProfileServer = null;
+let mysrcmClientId = null;
+try {
+    mysrcmPostmanToken = process.env.REACT_APP_MYSRCM_POSTMAN_TOKEN;
+    mysrcmProfileServer = process.env.REACT_APP_PROFILE_SERVER;
+    mysrcmClientId = process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID;
+} catch (e) {
+    console.error("Error: REACT_APP_MYSRCM_POSTMAN_TOKEN or REACT_APP_PROFILE_SERVER or REACT_APP_MYSRCM_FIREBASE_CLIENTID not set properly")
+}
 
-        const url = process.env.REACT_APP_PROFILE_SERVER + apiMap[api].api;
-        const method = apiMap[api].method;
+
+export const fetchProfileAPI = (api, method = "GET", extraHdrs = {}, extraData = {}) => {
+    var _api = api;
+    var _method = method;
+    var _headers = extraHdrs;
+    var _data = extraData;
+
+    if (api === 'get-token') {
+        _api = "/api/v2/secondary-firebase-token/";
+        _method = "POST";
+        _headers = {
+            'Postman-Token': mysrcmPostmanToken,
+            'cache-control': 'no-cache',
+        };
+    } else if (api.startsWith('/api/v2/')) {
+        _api = api;
+    } else {
+        _api = "/api/v2/" + api + "/";
+    }
+    const url = mysrcmProfileServer + _api;
+
+    return firebaseAppAuth.auth().currentUser.getIdToken().then(authToken => {
+
         var data = {
-            method,
+            method: _method,
             headers: {
                 'Authorization': 'Bearer ' + authToken,
-                'x-client-id': process.env.REACT_APP_MYSRCM_FIREBASE_CLIENTID,
+                'x-client-id': mysrcmClientId,
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json',
-                ...(apiMap[api].extraHdrs),
-            }
+                ...(_headers),
+            },
+            ...(_data)
         };
 
         if (api === 'get-token') {
@@ -95,7 +121,7 @@ export class MyAuth extends React.Component {
     }
 
     processLogin = () => {
-        const user = firebaseApp.auth().currentUser;
+        const user = firebaseAppAuth.auth().currentUser;
         const setS = this.setS;
 
         const setLogin = this.props.doLogin;
@@ -107,7 +133,6 @@ export class MyAuth extends React.Component {
 
             console.log("Fetched 1st auth token");
 
-
             fetchMe().then(myInfo => {
                 // console.log("MySRCM Me Response", myInfo);
                 console.log("MySRCM Me Response")
@@ -115,26 +140,29 @@ export class MyAuth extends React.Component {
                 setS({ loading: false });
 
             }).catch(e => {
-                console.log("Error fetchMe: ", e);
+                console.error("Error fetchMe: ", e);
                 setS({ loading: false, error: true })
 
             });
 
-            fetchT().then(res => {
-                //     console.log("MySRCM Response", res);
-                firebaseAppDflt.auth().signInWithCustomToken(res).then((r) => {
-                    //        console.log("2nd Firebase Response", r);
-                    console.log("Fetched 2nd auth token");
+            if (firebaseApp !== null) {
+                fetchT().then(res => {
+                    //     console.log("MySRCM Response", res);
+                    firebaseApp.auth().signInWithCustomToken(res).then((r) => {
+                        //        console.log("2nd Firebase Response", r);
 
+                    }).catch(e => {
+                        console.error("Error firebaseApp: ", e);
+                        setS({ loading: false, error: true })
+                    });;
                 }).catch(e => {
-                    console.log("Error firebaseAppDflt: ", e);
+                    console.error("Error fetchT: ", e);
                     setS({ loading: false, error: true })
-                });;
-            }).catch(e => {
-                console.log("Error fetchT: ", e);
-                setS({ loading: false, error: true })
-            });
+                });
 
+            } else {
+                console.warn("Note: REACT_APP_FIREBASE_DFLT_CONFIG not set, firebase instance is not being setup");
+            }
 
         } else {
             setLogout();
@@ -160,7 +188,7 @@ export class MyAuth extends React.Component {
                             
                             // className={styles.firebaseUi}
                             uiConfig={this.uiConfig}
-                            firebaseAuth={firebaseApp.auth()} />
+                            firebaseAuth={firebaseAppAuth.auth()} />
                     
                     {this.state.error && <div>Error in Authentication</div>}
                 </Modal>
@@ -206,7 +234,7 @@ export class SignOut extends React.Component {
         const setLogout = this.props.doLogout;
         return (this.props.loggedIn && (!this.props.isOpenLoginForm) && <div>
             <Button content="Sign Out" onClick={() => {
-                firebaseApp.auth().signOut().then(() => setLogout())
+                firebaseAppAuth.auth().signOut().then(() => setLogout())
             }} />
         </div>
         )

@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { firebaseAppDflt, EnsureLogin } from '../../firebase/firebaseApp';
+import { firebaseApp, EnsureLogin } from '../../firebase/firebaseApp';
 
 
 import UsersList from "./users-list";
@@ -16,7 +16,7 @@ export default class Users extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({ firestore_ref: firebaseAppDflt.firestore().collection(COLLECTION) })
+        this.setState({ firestore_ref: firebaseApp.firestore().collection(COLLECTION) })
     }
     
     render() {

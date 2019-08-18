@@ -68,9 +68,9 @@ export default {
         openLoginForm: false
     }),
 
-    fetchProfile: (api, data, gs_result_at) => ({
+    fetchProfileAPI: (api, gs_result_at, method="GET", headers = {}, data = {} ) => ({
         type: FETCH_PROFILE,
-        api, data, gs_result_at
+        api, data, gs_result_at, method, headers,
     }),
 
 }

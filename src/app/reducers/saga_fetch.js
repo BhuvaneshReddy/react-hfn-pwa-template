@@ -3,14 +3,14 @@ import { put, call } from 'redux-saga/effects';
 import { FETCHGS } from './constants';
 // import { USERINFO } from './constants';
 import actions from '../actions/actions';
-import { fetchAPI } from '../firebase/firebaseApp';
+import { fetchProfileAPI } from '../firebase/firebaseApp';
 // import u from '../libs/utils';
 
 const updateGS = (dict) => (actions.setGS(FETCHGS, dict))
 
 // const getIdToken = (ls) => u.get(ls, [USERINFO, "idToken"], false);
 
-export function* fetchProfile({ api, data, gs_result_at }) {
+export function* fetchProfile({ api, method, headers, data, gs_result_at }) {
 
   // const ls = yield select(state => state.localstorage);
 
@@ -20,7 +20,7 @@ export function* fetchProfile({ api, data, gs_result_at }) {
   //   return;
   // }
   try {
-    const result = yield call(() => fetchAPI(api));
+    const result = yield call(() => fetchProfileAPI(api, method, headers, data));
 
     // console.log("fetchProfile response", gs_result_at, result);
 
