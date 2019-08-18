@@ -7,7 +7,7 @@ import { Segment, Button, Dimmer, Loader } from 'semantic-ui-react';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { EnsureLogin, fetchAPI } from '../../firebase/firebaseApp';
+import { EnsureLogin, fetchProfileAPI } from '../../firebase/firebaseApp';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -37,7 +37,7 @@ class Page2 extends React.Component {
                             <Button content="Fetch Me"
                             onClick={() => {
                                 this.setState({ loading: true });
-                                    fetchAPI('me')
+                                    fetchProfileAPI('me')
                                         .then(res => res.results[0])
                                         .then(x => { this.setState({ loading: false, fetchme: JSON.stringify(x) }) })
 
@@ -46,7 +46,7 @@ class Page2 extends React.Component {
                             <Button content="Fetch Meditation Centers"
                             onClick={() => {
                                 this.setState({ loading: true });
-                                    fetchAPI('meditation-centers', headers, params)
+                                    fetchProfileAPI('meditation-centers')
                                         .then(x => { this.setState({ loading: false, fetchme: JSON.stringify(x) }) })
 
                                 }}
@@ -54,7 +54,7 @@ class Page2 extends React.Component {
                         <Button content="Fetch Centers"
                             onClick={() => {
                                 this.setState({ loading: true });
-                                fetchAPI('groups', headers, params)
+                                fetchProfileAPI('groups')
                                     .then(x => { this.setState({ loading: false, fetchme: JSON.stringify(x) }) })
 
                             }}

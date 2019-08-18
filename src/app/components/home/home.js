@@ -38,7 +38,7 @@ class Home extends Component {
         <div>Signed-In Pages demo</div>
         <EnsureLogin>
 
-          <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>
+          <Button onClick={() => this.props.fetchProfileAPI('me', FRES)}>Fetch Me</Button>
           <br />
 
           <div> Fetch Me Output:

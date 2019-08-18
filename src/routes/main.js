@@ -21,4 +21,9 @@ export default [
     exact: true,
     component: import('../app/components/firestore/users'),
   },
+  {
+    path: '/dorms-booking',
+    exact: true,
+    component: import('../app/components/dorms-booking/fetchDorms'),
+  },
 ];
