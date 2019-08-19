@@ -153,6 +153,7 @@ class ComfortDorm extends Component {
                             <Grid.Column
                                 textAlign="center"
                                 verticalAlign="middle"
+                                onClick={()=>{this.goToRoomSelections(dormD.name)}}
                                 style={{
                                     cursor: "pointer",
                                     height: "100px",
@@ -167,6 +168,7 @@ class ComfortDorm extends Component {
                             <Grid.Column
                                 textAlign="center"
                                 verticalAlign="middle"
+                                onClick={()=>{this.goToRoomSelections(dormB.name)}}
                                 style={{
                                     cursor: "pointer",
                                     height: "100px",
@@ -179,6 +181,7 @@ class ComfortDorm extends Component {
                             <Grid.Column
                                 textAlign="center"
                                 verticalAlign="middle"
+                                onClick={()=>{this.goToRoomSelections(dormA.name)}}
                                 style={{
                                     cursor: "pointer",
                                     height: "100px",
