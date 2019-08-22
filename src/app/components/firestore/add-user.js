@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const AddUser = (props) => {
     console.log(props);
     const [firstname, setFirstname] = useState('');
-    const [creator, setCreator] = useState('');
+    const [creator, setCreator] = useState(props.creator);
 
     function onSubmit(e) {
         e.preventDefault();
@@ -30,7 +30,7 @@ const AddUser = (props) => {
 
             <div>
                 <label>Creator</label>
-                <input type="text" value={creator} onChange={e => setCreator(e.currentTarget.value)} />                
+                <input type="text" value={props.creator} onChange={e => setCreator(e.currentTarget.value)} />                
             </div>
 
             <button>Save</button>

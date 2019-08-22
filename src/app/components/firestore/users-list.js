@@ -5,16 +5,18 @@ function useUsers(props) {
     const [ users, setUsers ] = useState([]);
 
     useEffect(() => {
-        const unsubscribe = props
-        .firestore_ref
-        .onSnapshot((snapshot) => {
+        //const unsubscribe = props
+        props.firestore_ref
+        .where('creator', '==', props.email)
+        .get()
+        .then((snapshot) => {
             const newUsers = snapshot.docs.map((doc) => doc.data());
             console.log(newUsers);
 
             setUsers(newUsers);
         })
 
-        return () => unsubscribe();
+        //return () => unsubscribe();
     }, []);
 
     return users
