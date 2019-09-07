@@ -7,7 +7,13 @@ import { Segment, Button, Dimmer, Loader } from 'semantic-ui-react';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { EnsureLogin, fetchAPI } from '../../firebase/firebaseApp';
+import { EnsureLogin, TheAvatar } from '../../firebase/firebaseApp';
+
+import { fetchProfileAPI } from '@heartfulnessinstitute/react-hfn-profile';
+
+function fetchAPI(api, headers, params) {
+    return fetchProfileAPI(api, "GET", headers, params);
+}
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -65,7 +71,7 @@ class Page2 extends React.Component {
                             {this.state.fetchme && <div>  API Response:<br /> <b>{this.state.fetchme}</b></div>}
                         </div>
                     </div>
-                
+                    <TheAvatar/>
             </EnsureLogin>
         )
     }

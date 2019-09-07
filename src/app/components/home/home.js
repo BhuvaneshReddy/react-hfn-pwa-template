@@ -11,7 +11,6 @@ const FRES = 'fres';
 
 export default @connect(
   ({ localstorage: ls, globalstate: gs }) => ({
-    userName: u.userName(ls),
     fres: u.getFetchResult(gs, FRES),
   }),
   actions)
@@ -39,7 +38,7 @@ class Home extends Component {
         <br />
         <br />
         <div>Signed-In Pages demo</div>
-        <EnsureLogin>
+        <EnsureLogin withSignInButton={true}>
 
           <Button onClick={() => this.props.fetchProfile('me', {}, FRES)}>Fetch Me</Button>
           <br />
@@ -49,7 +48,6 @@ class Home extends Component {
           </div>
           <br/><br/>
           <div>
-            {this.props.userName}
           </div>
           <SignOut />
         </EnsureLogin>

@@ -2,11 +2,11 @@ import {  flushCache  } from './saga_lscache';
 
 import { processLogIn } from './saga_signin';
 import { put, takeEvery, throttle } from 'redux-saga/effects';
-import { LS_TRIGGER_FLUSH, LSC_HYDRATE_CACHE, LOGIN_PROCESS_IT, USERINFO, FETCH_PROFILE } from './constants';
+import { LS_TRIGGER_FLUSH, LSC_HYDRATE_CACHE, LOGIN_PROCESS_IT, USERINFO, FETCH_PROFILE, INIT_FIREBASE } from './constants';
 // import { bulkPutDB } from './saga_dbsyncer';
 
 import u from '../libs/utils';
-import { fetchProfile } from './saga_fetch';
+import { fetchProfile, initFirebase } from './saga_fetch';
 
 export default function* rootSaga() {
 
@@ -20,8 +20,10 @@ export default function* rootSaga() {
     yield takeEvery(LOGIN_PROCESS_IT, processLogIn);
 
     // fetch Data Requests
+    yield takeEvery(INIT_FIREBASE, initFirebase);
     yield takeEvery(FETCH_PROFILE, fetchProfile);
 
+    yield put({ type: INIT_FIREBASE });
 
   } catch (er) {u.log(er)}
 }

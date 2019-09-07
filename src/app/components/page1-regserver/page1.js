@@ -9,7 +9,7 @@ import { fetchRecs, setRecsPBOneRun, fetchAggregates } from '../../libs/fetch';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { MyAuth } from '../../firebase/firebaseApp';
+import { EnsureLogin } from '../../firebase/firebaseApp';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({
@@ -76,12 +76,8 @@ class TableAndForm extends React.Component {
             { name: "value", required: true, label: "Value", type: "text" },
         ]
         return (
-            <div>
-                {!this.props.loggedIn &&
-                    <MyAuth />
-                }
-                {
-                    this.props.loggedIn &&
+            <EnsureLogin>
+
                             <div>
                                 <div>
                                     <RecordsTableWithEditor
@@ -135,8 +131,8 @@ class TableAndForm extends React.Component {
                             </div>
 
                         
-                }
-            </div>
+                
+            </EnsureLogin>
         )
     }
 }
