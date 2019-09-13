@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import actions from '../actions/actions';
 import u from '../libs/utils';
 import { signOut, HfnFirebaseAuth, HfnAvatar } from '@heartfulnessinstitute/react-hfn-profile';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Segment, Header } from 'semantic-ui-react';
 
 @connect(
     ({ localstorage: ls }) => ({
@@ -99,6 +99,20 @@ export class TheAvatar extends React.Component {
         if (!this.props.loggedIn) {
             return null
         }
-        return <HfnAvatar afterSignOut={this.props.doLogout} />
+        return <HfnAvatar
+            styleContainer={{ zIndex: "10000", fontSize: "18px", top: "10px", right: "10px", position: "absolute" }}
+            floatRight afterSignOut={this.props.doLogout} />
     }
 }
+
+export const TheHeader = (props) => (
+    <React.Fragment>
+
+    <Segment color="blue" inverted>
+        <Header>{props.children}
+           </Header>
+        </Segment>
+        <TheAvatar />
+    </React.Fragment>
+    
+)
