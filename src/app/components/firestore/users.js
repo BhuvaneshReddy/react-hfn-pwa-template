@@ -1,9 +1,9 @@
 import React from 'react'
 
 
-import {  EnsureLogin } from '../../firebase/firebaseApp';
-import { firebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
+import { EnsureLogin } from '../../libs/firebaseWrapper';
 
+import { getFirebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
 
 import UsersList from "./users-list";
 import AddUser from "./add-user";
@@ -17,7 +17,7 @@ export default class Users extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({ firestore_ref: firebaseApp.firestore().collection(COLLECTION) })
+        this.setState({ firestore_ref: getFirebaseApp().firestore().collection(COLLECTION) })
     }
     
     render() {

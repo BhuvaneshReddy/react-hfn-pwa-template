@@ -3,15 +3,20 @@ import { put, call } from 'redux-saga/effects';
 import { FETCHGS } from './constants';
 // import { USERINFO } from './constants';
 import actions from '../actions/actions';
-import { fetchProfileAPI } from '@heartfulnessinstitute/react-hfn-profile';
-
 // import u from '../libs/utils';
+
+import { fetchProfileAPI, getFirebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
 
 const updateGS = (dict) => (actions.setGS(FETCHGS, dict))
 
 // const getIdToken = (ls) => u.get(ls, [USERINFO, "idToken"], false);
 
-export function* fetchProfile({ api, method, headers, data, gs_result_at }) {
+export function* initFirebase() {
+  console.log("Initing Firebase");
+  let x = getFirebaseApp();
+}
+
+export function* fetchProfile({ api, data, gs_result_at }) {
 
   // const ls = yield select(state => state.localstorage);
 
@@ -21,7 +26,7 @@ export function* fetchProfile({ api, method, headers, data, gs_result_at }) {
   //   return;
   // }
   try {
-    const result = yield call(() => fetchProfileAPI(api, method, headers, data));
+    const result = yield call(() => fetchProfileAPI(api, "GET", {}, {}));
 
     // console.log("fetchProfile response", gs_result_at, result);
 

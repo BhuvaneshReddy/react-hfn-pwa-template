@@ -3,7 +3,8 @@ import {
     LSC_UPDATE_LS_DICT, LSC_UPDATE_LS_DICT_DEEP, LSC_RESET_CACHE,
     LOGIN_PROCESS_IT, USERINFO,
     LSC_HYDRATE_CACHE,
-    FETCH_PROFILE
+    FETCH_PROFILE,
+    INIT_FIREBASE
 } from '../reducers/constants';
 
 export default {
@@ -73,6 +74,9 @@ export default {
         api, data, gs_result_at, method, headers,
     }),
 
+    initFirebase: () => ({
+        type: INIT_FIREBASE
+    }),
 }
 
 

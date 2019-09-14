@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { Segment, Button, Table } from 'semantic-ui-react';
 
-import { RecordsTableWithEditor, gender_options, indiastate_options, validatePhoneNumber } from '../../libs/forms';
+import { RecordsTableWithEditor } from '../../libs/forms';
 import { fetchRecs, setRecsPBOneRun, fetchAggregates } from '../../libs/fetch';
 
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { MyAuth, EnsureLogin } from '../../firebase/firebaseApp';
+import { EnsureLogin } from '../../libs/firebaseWrapper';
 
 @connect(
     ({ localstorage: ls, globalstate: gs }) => ({

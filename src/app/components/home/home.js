@@ -5,13 +5,12 @@ import actions from '../../actions/actions';
 import u from '../../libs/utils';
 
 import 'semantic-ui-css/semantic.min.css';
-import { EnsureLogin, SignOut } from '../../firebase/firebaseApp';
+import { EnsureLogin, SignOut } from '../../libs/firebaseWrapper';
 
 const FRES = 'fres';
 
 export default @connect(
   ({ localstorage: ls, globalstate: gs }) => ({
-    userName: u.userName(ls),
     fres: u.getFetchResult(gs, FRES),
   }),
   actions)
@@ -35,8 +34,11 @@ class Home extends Component {
         <Button href="#/firestore-users">Firebase Cloudstore crud demo</Button>
         <br />
         <br />
+        <Button href="#/comfort-dorm">Comfort Dorm</Button>
+        <br />
+        <br />
         <div>Signed-In Pages demo</div>
-        <EnsureLogin>
+        <EnsureLogin withSignInButton={true}>
 
           <Button onClick={() => this.props.fetchProfileAPI('me', FRES)}>Fetch Me</Button>
           <br />
@@ -46,7 +48,6 @@ class Home extends Component {
           </div>
           <br/><br/>
           <div>
-            {this.props.userName}
           </div>
           <SignOut />
         </EnsureLogin>

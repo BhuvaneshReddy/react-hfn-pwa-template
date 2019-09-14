@@ -18,6 +18,7 @@ export const USERINFO = "userinfo";
 export const LOGINGS = "logings";
 
 // fetch
+export const INIT_FIREBASE = "INIT_FIREBASE";
 export const FETCH_PROFILE = "FETCH_PROFILE";
 export const FETCH_REG = "FETCH_REG";
 export const FETCHGS = "FETCHGS";
