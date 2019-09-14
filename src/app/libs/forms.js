@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PhoneNumberUtil } from 'google-libphonenumber';
 import { Input, Modal, Form, Button, Confirm, Segment, Header, Table, Icon, Message } from "semantic-ui-react";
 import isNil from 'lodash/isNil';
 import get from 'lodash/get'
@@ -105,25 +104,7 @@ export function validateRE(re1, txt) {
     return re.test(String(txt));
 }
 
-export function validatePhoneNumber(phoneNumber) {
 
-    if (validateRE(/\d{10}/, phoneNumber)) {
-        // valid 10 digit format
-        return true
-    }
-
-    /*
-    Phone number validation using google-libphonenumber
-    */
-    let valid = false;
-    try {
-        const phoneUtil = PhoneNumberUtil.getInstance();
-        valid = phoneUtil.isValidNumber(phoneUtil.parse(phoneNumber));
-    } catch (e) {
-        valid = false;
-    }
-    return valid;
-}
 
 
 export class RecordEditor extends Component {
@@ -147,7 +128,7 @@ export class RecordEditor extends Component {
         });
     }
 
-    setEdited = (e, { name, value, type, callback }) => {
+    setEdited = (e, { name, value, type }) => {
         console.log(name, value, type);
         e.preventDefault();
         if (isnotnull(value)) {

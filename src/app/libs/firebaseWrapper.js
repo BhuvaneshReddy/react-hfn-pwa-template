@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../actions/actions';
-import u from '../libs/utils';
+import u from './utils';
 import { signOut, HfnFirebaseAuth, HfnAvatar } from '@heartfulnessinstitute/react-hfn-profile';
 import { Button, Modal, Segment, Header } from 'semantic-ui-react';
 

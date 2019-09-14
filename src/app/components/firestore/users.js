@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { EnsureLogin } from '../../firebase/firebaseApp';
+import { EnsureLogin } from '../../libs/firebaseWrapper';
 
 import { getFirebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
 

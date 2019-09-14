@@ -7,7 +7,7 @@ import { Segment, Button, Dimmer, Loader } from 'semantic-ui-react';
 import u from '../../libs/utils';
 
 import actions from '../../actions/actions';
-import { EnsureLogin, TheAvatar } from '../../firebase/firebaseApp';
+import { EnsureLogin, TheAvatar } from '../../libs/firebaseWrapper';
 
 import { fetchProfileAPI } from '@heartfulnessinstitute/react-hfn-profile';
 

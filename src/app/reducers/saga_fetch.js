@@ -12,6 +12,7 @@ const updateGS = (dict) => (actions.setGS(FETCHGS, dict))
 // const getIdToken = (ls) => u.get(ls, [USERINFO, "idToken"], false);
 
 export function* initFirebase() {
+  console.log("Initing Firebase");
   let x = getFirebaseApp();
 }
 
