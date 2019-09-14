@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Header, Button, Form, Select } from 'semantic-ui-react';
+import { Button, Form, Select } from 'semantic-ui-react';
+import { firebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
 
 import BarCodeReader from '../../shared/BarCodeReader';
 import u from '../../../libs/utils';
@@ -10,7 +11,11 @@ export default class Abhyasi extends Component {
     this.state = {
       scanning: false,
       abhyasiBarCode: '',
-      inTime: null
+      inTime: null,
+      options: [
+        { key: 'en', value: 'entry', text: 'Entry' },
+        { key: 'ex', value: 'exit', text: 'Exit' }
+      ]
     };
     this._scan = this._scan.bind(this);
     this._onDetected = this._onDetected.bind(this);
@@ -45,7 +50,7 @@ export default class Abhyasi extends Component {
 
   handleFormSubmit = () => {
     this.setState({ inDate: new Date() });
-    firebaseAppDflt
+    firebaseApp
       .firestore()
       .collection('visitors')
       .doc('Abhyasi')
@@ -61,10 +66,6 @@ export default class Abhyasi extends Component {
   };
 
   render() {
-    const options = [
-      { key: 'af', value: 'af', text: 'Afghanistan' },
-      { key: 'ax', value: 'ax', text: 'Aland Islands' }
-    ];
     return (
       <div>
         <Button onClick={this._scan}>
@@ -91,7 +92,10 @@ export default class Abhyasi extends Component {
             />
             <br />
             <br />
-            <Select placeholder="Select Operation" options={options} />
+            <Select
+              placeholder="Select Operation"
+              options={this.state.options}
+            />
             <br />
             <br />
             <Button primary>Submit</Button>
