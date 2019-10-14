@@ -1,14 +1,15 @@
 {
-  "name": "react-hfn-pwa-template",
+  "name": "pwa-hfn-registration-main",
   "version": "1.0.0",
-  "description": "Example on using Redux Saga with PawJS (https://github.com/Atyantik) and Semantic UI with HFN Profile APIs",
+  "description": "Heartfulness Registrations",
   "scripts": {
     "start": "pawjs --env=development start",
-    "build": "pawjs --env=production --config=prod.pawconfig.json build"
+    "build": "pawjs --env=production --config=prod.pawconfig.json build",
+    "firebase-serve": "firebase serve"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HeartfulnessInstitute/react-hfn-pwa-template.git"
+    "url": "git+https://github.com/HeartfulnessInstitute/pwa-hfn-registration-main.git"
   },
   "author": {
     "name": "Sree Hari Nagaralu"
@@ -30,20 +31,17 @@
   },
   "homepage": "https://github.com/HeartfulnessInstitute/react-hfn-pwa-template#readme",
   "dependencies": {
-    "@heartfulnessinstitute/react-hfn-forms": "^0.1.3",
-    "@heartfulnessinstitute/react-hfn-profile": "^3.1.6",
+    "@heartfulnessinstitute/react-hfn-forms": "^0.3.1",
+    "@heartfulnessinstitute/react-hfn-profile": "^3.1.7",
     "@pawjs/redux": "^2.1.6",
     "classnames": "^2.2.6",
     "firebase": "^6.6.0",
     "js-base64": "^2.5.1",
     "lodash": "^=4.17.14",
+    "office-ui-fabric-react": "^7.48.1",
     "query-string": "^6.8.1",
     "react-redux": "^5.0.7",
-    "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
-    "redux": "^4.0.1",
-    "redux-saga": "^0.16.2",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.87.2"
+    "redux": "^4.0.4",
+    "redux-saga": "^0.16.2"
   }
 }

@@ -1,39 +1,51 @@
 
 
+const prodPages = [
+
+];
+
+const workSpace = [
+  {
+    path: '/firestore',
+    exact: true,
+    component: import('../workspace/firestore/'),
+  },
+];
+
+
+const devRing = [
+
+  // {
+  //   path: '/page1',
+  //   exact: true,
+  //   component: import('../devring/page1-regserver/page1'),
+  // },
+//   {
+//     path: '/favorites',
+//     exact: true,
+//     component: import('../devring/firestore/users'),
+//   },
+//   {
+//     path: '/agg',
+//     exact: true,
+//     component: import('../devring/boilerplates/page1_agg_query'),
+//   },
+//   {
+//     path: '/event',
+//     abstract: true,
+//     component: import('../devring/event-registration'),
+//   },
+//   {
+//     path: '/pnr',
+//     abstract: true,
+//     component: import('../devring/pnr'),
+//   },
+
+];
+
+
 export default [
-  {
-    path: '/',
-    exact: true,
-    component: import('../app/components/home/home'),
-  },
-  {
-    path: '/page1',
-    exact: true,
-    component: import('../app/components/page1-regserver/page1'),
-  },
-  {
-    path: '/page2',
-    exact: true,
-    component: import('../app/components/page2-profileserver/page2'),
-  },
-  {
-    path: '/firestore-users',
-    exact: true,
-    component: import('../app/components/firestore/users'),
-  },
-  {
-    path: '/dorms-booking',
-    exact: true,
-    component: import('../app/components/dorms-booking/fetchDorms'),
-  },
-  {
-    path: '/comfort-dorm',
-    exact: true,
-    component: import('../app/components/comfortDorm/comfortDorm'),
-  },
-  {
-    path: '/room-selection',
-    exact: true,
-    component: import('../app/components/comfortDorm/room-selection/roomSelection.js'),
-  }
+  ...prodPages,
+  ...(devRing.map(rec => { let r = { ...rec }; r.path = "/devring" + r.path; return r })),
+  ...(workSpace.map(rec => { let r = { ...rec }; r.path = "/workspace" + r.path; return r })),
 ];

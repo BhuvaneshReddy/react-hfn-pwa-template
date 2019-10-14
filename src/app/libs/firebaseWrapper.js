@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import actions from '../actions/actions';
 import u from './utils';
 import { signOut, HfnFirebaseAuth, HfnAvatar } from '@heartfulnessinstitute/react-hfn-profile';
-import { Button, Modal, Segment, Header } from 'semantic-ui-react';
+
+import { DefaultButton, FontIcon, Text } from 'office-ui-fabric-react';
+import { XModal } from './XModal';
 
 @connect(
     ({ localstorage: ls }) => ({
@@ -22,7 +24,7 @@ export class SignOut extends React.Component {
     }
     render() {
         return (
-            this.props.loggedIn ?  <Button content="Sign Out" onClick={this.processSignOut} /> : null
+            this.props.loggedIn ?  <DefaultButton text="Sign Out" onClick={this.processSignOut} /> : null
         )
     }
 }
@@ -54,7 +56,7 @@ export class EnsureLogin extends React.Component {
             return;
         }
         try {
-            console.log("loginBlob", loginBlob);
+            //console.log("loginBlob", loginBlob);
             this.props.doLogin(loginBlob)
         } catch (e) { }
 
@@ -70,20 +72,16 @@ export class EnsureLogin extends React.Component {
         }
 
 
-        let modalParams = { open: true }
+        let modalParams = { isDarkOverlay: true, isBlocking: false }
         if ('withSignInButton' in this.props && this.props.withSignInButton) {
-            modalParams = { trigger: <Button>Sign-In</Button> }
+            modalParams.trigger = "Sign-In"
         }
 
         return (
-            <Modal {...modalParams} style={{ width: "300px" }}>
-                <Modal.Content>
-                    <div style={{ paddingTop: "40px" }}>
-                        <HfnFirebaseAuth doLogout={this.processLogout} doLogin={this.processLogin} />
-                    </div>
-                </Modal.Content>
-            </Modal>
-
+            <XModal {...modalParams}>
+                <div style={{height: "20px"}}></div>
+                <HfnFirebaseAuth doLogout={this.processLogout} doLogin={this.processLogin} />
+            </XModal>
         )
     }
 } 
@@ -108,11 +106,16 @@ export class TheAvatar extends React.Component {
 export const TheHeader = (props) => (
     <React.Fragment>
 
-    <Segment color="blue" inverted>
-        <Header>{props.children}
-           </Header>
-        </Segment>
+        <div>
+
+            <Text variant="large">
+                {"backUrl" in props && <a href={props.backUrl}><FontIcon iconName={("backIcon" in props && props.backIcon) || "Back" } /></a>}
+                {props.children}
+            </Text>
+
+        </div>
         <TheAvatar />
+
     </React.Fragment>
     
 )

@@ -4,6 +4,11 @@ import mySaga from './app/reducers/saga';
 
 import * as reducers from './app/reducers/';
 
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+
+initializeIcons("https://static2.sharepointonline.com/files/fabric/assets/icons/", { disableWarnings: true });
+
+
 const appInitialState = {};
 
 export default class Client {

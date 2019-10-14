@@ -5,7 +5,6 @@ import actions from '../../actions/actions';
 import u from '../../libs/utils';
 
 import 'semantic-ui-css/semantic.min.css';
-import { EnsureLogin, SignOut } from '../../libs/firebaseWrapper';
 
 const FRES = 'fres';
 
@@ -18,7 +17,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h1>PWA with MySRCM APIs - Boilerplate</h1>
+        <h1>Registrations S</h1>
         <div>
         </div>
         <br />
@@ -27,30 +26,15 @@ class Home extends Component {
         <br />
         <br />
         <div></div>
-        <Button href="#page2">ProfileServer APIs demo</Button>
         <br />
         <br />
         <div></div>
         <Button href="#/firestore-users">Firebase Cloudstore crud demo</Button>
         <br />
         <br />
-        <Button href="#/comfort-dorm">Comfort Dorm</Button>
         <br />
         <br />
-        <div>Signed-In Pages demo</div>
-        <EnsureLogin withSignInButton={true}>
-
-          <Button onClick={() => this.props.fetchProfileAPI('me', FRES)}>Fetch Me</Button>
-          <br />
-
-          <div> Fetch Me Output:
-          {JSON.stringify(this.props.fres)}
-          </div>
-          <br/><br/>
-          <div>
-          </div>
-          <SignOut />
-        </EnsureLogin>
+ 
 
      </div>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Button, Loader, Dimmer } from 'semantic-ui-react';
+import { Segment, Button, Loader, Dimmer, Modal } from 'semantic-ui-react';
 import DynamicTable from '@heartfulnessinstitute/react-hfn-forms/dist/DynamicTable';
 import {
     getKanhaRegApi, postKanhaRegApiPk, postKanhaRegApi, postKanhaRegApiId,
@@ -17,7 +17,7 @@ const discardButton = <Button>Discard</Button>;
 class TableAndForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { loading: false, data: [] };
+        this.state = { loading: false, data: []};
         this.onCUD = this.onCUD.bind(this)
     }
 
@@ -63,7 +63,7 @@ class TableAndForm extends React.Component {
                     } else {
                         data = u.findAndReplace(this.state.data, pk_key, pk_val, x.results[0]);
                     }
-                    this.setState({ data }, callback);
+                    this.setState({ data },  callback);
                 })
                 .catch(e => {
                     console.error(e);
@@ -72,9 +72,17 @@ class TableAndForm extends React.Component {
     }
 
     render() {
-        const paneLayout = null;
+        const paneLayout = (a, b, c, d) => <div>
+            {b}{a}
+            <Modal open={!!d}>
+                <Modal.Content>
+                    {c}
+                </Modal.Content>
+            </Modal>
+        </div>;
         const renderRecord = null;
         const formLayout = null;
+        const tableStyle = { rTableCell: { padding: "10px" } };
 
         const table_columns1 = [
             { name: 'id', label: 'ID' },
@@ -92,7 +100,7 @@ class TableAndForm extends React.Component {
             }
             return false
         }
-
+  
         return (
             <React.Fragment>
                 {this.state.loading && <Dimmer active={true}><Loader /></Dimmer>}
@@ -101,11 +109,11 @@ class TableAndForm extends React.Component {
                 <DynamicTable
                     primary_key="key"
                     table_columns={table_columns1}
-                    table_style={{ rTableCell: { padding: "10px" } }}
+                    table_style={tableStyle}
                     paneLayout={paneLayout}
                     renderRecord={renderRecord}
                     data={this.state.data}
-                    allow={{ create: true, delete: true, update: true }}
+                    allow={{ create: false, delete: false, update: false }}
                     buttons={{ createButton, deleteButton, editButton, submitButton, discardButton }}
                     form_props={{ formFields, formLayout, formValidator }}
                     onCUD={this.onCUD}

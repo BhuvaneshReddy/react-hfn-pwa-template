@@ -19,16 +19,16 @@ export default class Routes {
     routeHandler.hooks.initRoutes.tapPromise('AppRoutes', async () => {
       routeHandler.addRoutes(routes);
       routeHandler.setPwaSchema({
-        name: 'ReactPWA | PawJS - Redux Saga',
-        short_name: 'P-SAGA',
+        name: 'Heartfulness Registrations',
+        short_name: 'HFNReg',
         dir: 'ltr',
         lang: 'en-US',
         orientation: 'any',
-        start_url: '/examples/redux-saga',
+        start_url: '/',
         background_color: '#111',
         theme_color: '#111',
         display: 'standalone',
-        description: 'Redux Saga implementation using ReactPWA',
+        description: 'Heartfulness Events Registrations',
         icons: [
           {
             src: ShareImg72,
@@ -66,21 +66,21 @@ export default class Routes {
       });
       // eslint-disable-next-line
       routeHandler.getDefaultSeoSchema = () => ({
-        title: 'ReactPWA | Redux Saga',
-        name: 'ReactPWA | Redux Saga',
-        description: 'Redux Saga implementation using ReactPWA',
+        title: 'Heartfulness Event Registrations',
+        name: 'Heartfulness Event Registrations',
+        description: 'Heartfulness Event Registrations at Kanha Shanti Vanam, Hyderabad',
         type: 'website',
-        url: 'https://www.reactpwa.com/examples/redux-saga',
-        site_name: 'ReactPWA',
+        url: 'https://heartfulness.org/',
+        site_name: 'HFNRegistrations',
         image: SocialShareImg,
         meta: [
           {
             name: 'author',
-            content: 'Yash Thakur',
+            content: 'Sree Hari Nagaralu',
           },
           {
             name: 'description',
-            content: 'Redux Saga implementation using ReactPWA',
+            content: 'Heartfulness Event Registrations at Kanha Shanti Vanam Hyderabad',
           },
           {
             name: 'theme-color',
@@ -96,15 +96,15 @@ export default class Routes {
           },
           {
             name: 'application-name',
-            content: 'ReactPWA | Redux Saga',
+            content: 'Heartfulness Registrations',
           },
           {
             name: 'generator',
-            content: 'Redux Saga',
+            content: 'Heartfulness Registrations',
           },
           {
             name: 'apple-mobile-web-app-title',
-            content: 'ReactPWA | Redux Saga',
+            content: 'Heartfulness Registrations',
           }
         ],
       });

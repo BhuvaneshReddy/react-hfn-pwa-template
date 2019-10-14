@@ -4,8 +4,8 @@ import { Segment, Button } from 'semantic-ui-react';
 
 import { fetchAggregates } from '../../libs/fetch';
 
-import { EnsureLogin, TheHeader } from '../../libs/firebaseWrapper';
-import TableAndForm from './table_and_form_page1';
+import { TheHeader } from '../../libs/firebaseWrapper';
+
 
 class Page1 extends Component {
     componentWillMount() {
@@ -22,11 +22,7 @@ class Page1 extends Component {
         return (
             <div>
                 <TheHeader>Page 1</TheHeader>
-                <Segment color="green">
-                    <EnsureLogin>
-                        <TableAndForm />
-                    </EnsureLogin>
-                </Segment>
+      
                 <Segment color="olive">
                     <Button content="Aggregate Query"
                         onClick={() => {
