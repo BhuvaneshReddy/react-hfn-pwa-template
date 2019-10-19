@@ -23,7 +23,8 @@
     }
   ],
   "devDependencies": {
-    "@pawjs/pawjs": "^2.3.2"
+    "@pawjs/pawjs": "^2.3.2",
+    "react-hot-loader": "^4.6.3"
   },
   "license": "MIT",
   "bugs": {
@@ -31,8 +32,8 @@
   },
   "homepage": "https://github.com/HeartfulnessInstitute/react-hfn-pwa-template#readme",
   "dependencies": {
-    "@heartfulnessinstitute/react-hfn-forms": "^0.3.1",
-    "@heartfulnessinstitute/react-hfn-profile": "^3.1.7",
+    "@heartfulnessinstitute/react-hfn-forms": "^0.3.5",
+    "@heartfulnessinstitute/react-hfn-profile": "^3.2.1",
     "@pawjs/redux": "^2.1.6",
     "classnames": "^2.2.6",
     "firebase": "^6.6.0",
