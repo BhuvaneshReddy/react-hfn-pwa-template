@@ -4,6 +4,12 @@ const prodPages = [
 
 ];
 
+const home = {
+  path: '/',
+  exact: true,
+  component: import('../workspace/firestore/'),  
+}
+
 const workSpace = [
   {
     path: '/firestore',
@@ -45,6 +51,7 @@ const devRing = [
 
 
 export default [
+  home,
   ...prodPages,
   ...(devRing.map(rec => { let r = { ...rec }; r.path = "/devring" + r.path; return r })),
   ...(workSpace.map(rec => { let r = { ...rec }; r.path = "/workspace" + r.path; return r })),

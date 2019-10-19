@@ -1,0 +1,40 @@
+{
+    "index":{
+        "header": "HEARTFULNESS CARE",
+        "confidential": "confidential"
+    },
+    "usersdb": {
+        "userid": "User ID",
+        "name": "Full Name",
+        "age": "Age",
+        "gender": "Gender",
+        "city": "City",
+        "state": "State (India)",
+        "country": "Country",
+        "email": "Email",
+        "mobile": "Mobile",
+        "phone2": "Phone 2",
+        "caretrainer": "CARE Trainer",
+        "status": "Status",
+        "activities": ""
+    },
+    "activity_db": {
+        "date": "Date",
+        "sitting": "Sitting",
+        "notes": "Notes"
+    },
+    "sitting_opts": {
+        "1st_sitting": "Day 1 Sitting",
+        "2nd_sitting": "Day 2 Sitting",
+        "3rd_sitting": "Day 3 Sitting",
+        "weekly": "Weekly Sitting"
+    },
+    "status_opts": {
+        "active": "Active",
+        "discontinued": "Discontinued",
+        "expired": "Expired"
+    },
+    "misc": {
+        "not_started": "Sittings Not Started"
+    }
+}

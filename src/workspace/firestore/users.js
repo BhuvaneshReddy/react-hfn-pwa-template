@@ -1,74 +1,57 @@
 import React, { useState, useEffect } from 'react'
-import { Text } from 'office-ui-fabric-react/lib/Text';
-import { getFirebaseApp, xUserId } from '@heartfulnessinstitute/react-hfn-profile';
+import { getFirebaseApp, xUserId, xUserEmail } from '@heartfulnessinstitute/react-hfn-profile';
 import UsersList from "./users-list";
-import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
+import { PivotItem, Pivot } from 'office-ui-fabric-react/lib/Pivot';
+import AdminsList from './admins-list';
 
-const COLLECTION = 'JobApplications';
+const CAREADMINS = 'CareAdmins';
+const CAREUSERS = 'CareUsers';
+const CARETRAINERS = 'CareTrainers';
 
+function useAdmins() {
+    //console.log(props);
+    const [admin, setAdmin] = useState(false);
+    useEffect(() => {
+        const unsubscribe = getFirebaseApp().firestore().collection(CAREADMINS).where('email', '==', xUserEmail())
+            .onSnapshot((snapshot) => {
+                let i_am_admin = snapshot.docs.length > 0;
+                setAdmin(i_am_admin);
+            })
 
-// export default class Users extends React.Component {
+        return () => unsubscribe();
+    }, []);
 
-//     constructor(props) {
-//         super(props);
-//         this.toggleAll = this.toggleAll.bind(this);
-//     }
-
-//     componentWillMount() {
-//         const uid = xUserId();
-//         const fs = getFirebaseApp().firestore();
-//         const collection = fs.collection(COLLECTION).where("assigned", "==", uid);
-//         this.setState({ all: false, collection });
-//     }
- 
-//     toggleAll() {
-//         const fs = getFirebaseApp().firestore();
-//         const { all, collection } = this.state;
-
-//         if (all === false) {
-//             let collection = fs.collection(COLLECTION);
-//             this.setState({ all: true, collection });
-//         } else {
-//             let collection = fs.collection(COLLECTION).where("assigned", "==", uid);
-//             this.setState({ all: true, collection });
-//         }
-//     }
-//     render() {
-//         const { all, collection } = this.state;
-
-//         const str = all ? "All" : "My";
-//         return (
-//             <React.Fragment>
-//                 <Text variant="large"> {str} Users</Text>
-//                 <Toggle value={all} onChange={this.toggleAll} onText="Fiiltered My Records" offText="Showing All Records" />
-//                 <UsersList firestore_collection={collection} />
-//             </React.Fragment>
-//         )
-//     }
-// }
+    return admin
+}
 
 const Users = (props) => {
+    const [CareAdmins] = useState(getFirebaseApp().firestore().collection(CAREADMINS));
+    const [CareUsers] = useState(getFirebaseApp().firestore().collection(CAREUSERS));
+    const [CareTrainers] = useState(getFirebaseApp().firestore().collection(CARETRAINERS));
 
-    const uid = xUserId();
-    const mycollection = getFirebaseApp().firestore().collection(COLLECTION);
-    const [collection, setCollection] = useState(mycollection);
-    const [all, setAll] = useState(1);
-
-    function toggleAll() {
-        if (all === 1) {
-            setAll(0);
-            setCollection(getFirebaseApp().firestore().collection(COLLECTION).where("assigned", "==", uid));
-        } else {
-            setAll(1);
-            setCollection(getFirebaseApp().firestore().collection(COLLECTION));
-        }
-    }
+    const i_am_admin = useAdmins();
 
     return (
         <React.Fragment>
-            <br/>
-            <Toggle  value={all} onChange={toggleAll} onText="Fiiltered My Records" offText="Showing All Records" />
-                <UsersList key={all} firestore_collection={collection} />
+            <br />
+            <Pivot key={i_am_admin}>
+                <PivotItem headerText="My Patients">
+                    <UsersList fcs={CareUsers} firestore_collection={CareUsers.where('caretrainer', '==', xUserEmail())} scope="trainer" />
+                </PivotItem>
+                {i_am_admin && <PivotItem headerText="All Patients (Admins Only)">
+                    <UsersList fcs={CareUsers} firestore_collection={CareUsers} trainers={CareTrainers} scope="admin" />
+                </PivotItem>
+                }
+                {i_am_admin && <PivotItem headerText="CARE Trainers (Admins Only)">
+                    <AdminsList firestore_collection={CareTrainers} i_am_admin={i_am_admin}  />
+                </PivotItem>}
+               <PivotItem headerText="Admins">
+                    <AdminsList firestore_collection={CareAdmins} i_am_admin={true} />
+                </PivotItem>
+                
+       
+         
+            </Pivot>
         </React.Fragment>
     )
 }
