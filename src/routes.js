@@ -8,7 +8,9 @@ import ShareImg384 from './resources/img/icon-384x384.png';
 import ShareImg512 from './resources/img/icon-512x512.png';
 import SocialShareImg from './resources/img/Social-Share-Image.png';
 import HomeRoutes from './routes/main';
+import { getFirebaseApp } from '@heartfulnessinstitute/react-hfn-profile';
 
+getFirebaseApp();
 
 export default class Routes {
   apply(routeHandler) {

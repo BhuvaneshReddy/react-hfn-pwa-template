@@ -1,7 +1,7 @@
 {
-  "name": "pwa-hfn-registration-main",
+  "name": "react-hfn-pwa-template",
   "version": "1.0.0",
-  "description": "Heartfulness Registrations",
+  "description": "React PWA template",
   "scripts": {
     "start": "pawjs --env=development start",
     "build": "pawjs --env=production --config=prod.pawconfig.json build",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HeartfulnessInstitute/pwa-hfn-registration-main.git"
+    "url": "git+https://github.com/HeartfulnessInstitute/react-hfn-pwa-template.git"
   },
   "author": {
     "name": "Sree Hari Nagaralu"
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/HeartfulnessInstitute/react-hfn-pwa-template#readme",
   "dependencies": {
     "@heartfulnessinstitute/react-hfn-forms": "^0.3.5",
-    "@heartfulnessinstitute/react-hfn-profile": "^3.2.1",
+    "@heartfulnessinstitute/react-hfn-profile": "^3.2.2",
     "@pawjs/redux": "^2.1.6",
     "classnames": "^2.2.6",
     "firebase": "^6.6.0",
@@ -43,6 +43,7 @@
     "query-string": "^6.8.1",
     "react-redux": "^5.0.7",
     "redux": "^4.0.4",
-    "redux-saga": "^0.16.2"
+    "redux-saga": "^0.16.2",
+    "use-global-hook": "^0.1.11"
   }
 }

@@ -1,8 +1,8 @@
 import ReduxClient from '@pawjs/redux/client';
 import createSagaMiddleware from 'redux-saga';
-import mySaga from './app/reducers/saga';
+import mySaga from './common/reducers/saga';
 
-import * as reducers from './app/reducers/';
+import * as reducers from './common/reducers/';
 
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 
@@ -45,8 +45,8 @@ export default class Client {
       .beforeRender
       .tapPromise('RunSagaMiddleware', async () => this.sagaMiddleware.run(mySaga));
 
-    clientHandler.hooks.locationChange.tapPromise('ReInitAds', async () => {
-      this.trackPageView();
-    });
+    // clientHandler.hooks.locationChange.tapPromise('ReInitAds', async () => {
+    //   this.trackPageView();
+    // });
   }
 }

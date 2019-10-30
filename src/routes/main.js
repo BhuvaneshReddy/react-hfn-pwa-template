@@ -1,21 +1,21 @@
 
 
 const prodPages = [
-
+  {
+    path: '/firestore',
+    exact: true,
+    component: import('../prodpages/firestore/'),
+  },
 ];
 
 const home = {
   path: '/',
   exact: true,
-  component: import('../workspace/firestore/'),  
+  component: import('../prodpages/firestore/'),  
 }
 
 const workSpace = [
-  {
-    path: '/firestore',
-    exact: true,
-    component: import('../workspace/firestore/'),
-  },
+
 ];
 
 

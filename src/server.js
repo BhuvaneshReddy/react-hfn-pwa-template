@@ -1,8 +1,8 @@
 import React from 'react';
 import ReduxServer from '@pawjs/redux/server';
 import createSagaMiddleware from 'redux-saga';
-import * as reducers from './app/reducers/';
-import mySaga from './app/reducers/saga';
+import * as reducers from './common/reducers/';
+import mySaga from './common/reducers/saga';
 import FavIcon from './resources/img/favicon.ico';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 
